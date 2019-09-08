@@ -1,6 +1,6 @@
 <div align="center">
-  <a href="https://cdn.itwcreativeworks.com/assets/proxifly/images/logo/proxifly-brandmark-blue-x.svg">
-    <img src="https://cdn.itwcreativeworks.com/assets/proxifly/images/logo/proxifly-brandmark-blue-x.svg">
+  <a href="https://cdn.itwcreativeworks.com/assets/proxifly/images/logo/proxifly-brandmark-black-x.svg">
+    <img src="https://cdn.itwcreativeworks.com/assets/proxifly/images/logo/proxifly-brandmark-black-x.svg">
   </a>
   <br>
   <br>
