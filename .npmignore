@@ -1,0 +1,15 @@
+_includes
+_layouts
+_posts
+_websrc
+assets
+blog
+pages
+special
+_config_development.yml
+_config.yml
+CNAME
+Gemfile
+Gemfile.lock
+gulpfile.js
+.codeclimate.yml

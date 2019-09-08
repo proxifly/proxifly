@@ -1,0 +1,35 @@
+{
+  "name": "proxifly",
+  "version": "0.0.0",
+  "description": "Proxifly is a service to get free HTTPS proxies and check your public IP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/proxifly/proxifly"
+  },
+  "keywords": [
+    "proxifly",
+    "proxies",
+    "free proxies",
+    "http proxies",
+    "https proxies",
+    "socks proxies",
+    "proxy list",
+    "ip",
+    "ipv4",
+    "ipv6",
+    "get public ip"
+  ],
+  "author": "ITW Creative Works",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/proxifly/proxifly/issues"
+  },
+  "homepage": "https://proxifly.com"
+}
