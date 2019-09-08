@@ -38,9 +38,9 @@
   function Proxifly(options) {
     // options = options || {};
     this.options = options || {};
-    this.options.environment = options.environment || environment;
-    this.options.apiKey = options.apiKey || '';
-    this.options.debug = typeof options.debug !== 'undefined' ? options.debug : false;
+    this.options.environment = this.options.environment || environment;
+    this.options.apiKey = this.options.apiKey || '';
+    this.options.debug = typeof this.options.debug !== 'undefined' ? this.options.debug : false;
     console.log(this.options);
   };
 

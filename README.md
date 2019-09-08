@@ -38,7 +38,7 @@ Yes, this module works in both Node and browser environments, including compatab
 
 ## Install Proxifly
 ### Install via npm
-Install with npm if you plan to use Proxifly in a Node project or in the browser.
+Install with npm if you plan to use `proxifly` in a Node project or in the browser.
 ```shell
 npm install proxifly
 ```
