@@ -21,9 +21,11 @@
 
   this.extra = '8'; //@@@ Delete later
 
-  if ((typeof window !== 'undefined') && (window.XMLHttpRequest || XMLHttpRequest || ActiveXObject)) {
-    environment = 'browser';
-  }
+  // if ((typeof window !== 'undefined') && (window.XMLHttpRequest || XMLHttpRequest || ActiveXObject)) {
+  //   environment = 'browser';
+  // }
+  environment = (Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]') ? 'node' : 'browser';
+
   if (environment == 'browser') {
     registerName();
   }
@@ -166,12 +168,13 @@
           res.on('end', function() {
             // console.log('END > ', full.toString());
             var resData = JSON.parse(full.toString());
+            // console.log('resData', resData);
             if (resData) {
-              callback({error: false, request: resData, response: resData[0]});
+              callback({error: false, request: req, response: resData});
               // return {error: false, req: resData, res: resData[0]};
               // resolve({req: resData, response: resData[0]});
             } else {
-              callback({error: true, request: resData});
+              callback({error: true, request: req});
               // return {error: true, req: resData};
               // reject({req: resData});
             }

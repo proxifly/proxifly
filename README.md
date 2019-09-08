@@ -55,7 +55,7 @@ Install with CDN if you plan to use Proxifly only in a browser environment.
 ```html
 <script src="https://cdn.jsdelivr.net/npm/proxifly"></script>
 <script type="text/javascript">
-  var proxifly = new Proxifly()({
+  var proxifly = new Proxifly({
     apiKey: 'your_api_key' // Not required, but having one removes limits (get your key at https://proxifly.com).
   });
 </script>
@@ -133,7 +133,7 @@ We built `proxifly` without `Promises` because we know not everyone uses an envi
 ```js
 function getPublicIp(options) {
   return new Promise((resolve, reject) => {
-    Proxifly.getPublicIp(options, function (error, response) {
+    proxifly.getPublicIp(options, function (error, response) {
       if (error) {
         reject(error);
       } else {
@@ -145,7 +145,7 @@ function getPublicIp(options) {
 
 function getProxy(options) {
   return new Promise((resolve, reject) => {
-    Proxifly.getProxy(options, function (error, response) {
+    proxifly.getProxy(options, function (error, response) {
       if (error) {
         reject(error);
       } else {
