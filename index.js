@@ -71,6 +71,8 @@
   Proxifly.prototype.getProxy = function(options, callback) {
     var This = this;
     options = options || {};
+    options.format = (options.format || 'json').toLowerCase();
+    
     // options.quantity = options.quantity || 1;
 
     return serverRequest(This, {host: 'api.proxifly.com', path: '/getProxy', method: 'POST'}, options, function (response) {
@@ -83,16 +85,17 @@
   Proxifly.prototype.getPublicIp = function(options, callback) {
     var This = this;
     options = options || {};
-    options.mode = options.mode || 'IPv4';
-    var host = (options.mode == 'IPv4') ? 'api.proxifly.com' : 'api6.ipify.org';
-    var path = (options.mode == 'IPv4') ? '/getPublicIp' : '/';
-    var method = (options.mode == 'IPv4') ? 'POST' : 'GET';
+    options.mode = (options.mode || 'IPv4').toLowerCase();
+    options.format = (options.format || 'json').toLowerCase();
+    var host = (options.mode == 'ipv4') ? 'api.proxifly.com' : 'api6.ipify.org';
+    var path = (options.mode == 'ipv4') ? '/getPublicIp' : '/';
+    var method = (options.mode == 'ipv4') ? 'POST' : 'GET';
 
     return serverRequest(This, {host: host, path: path, method: method}, options, function (response) {
       if (!response.error) {
         var res = {};
         if (options.format == 'json') {
-          res.ip = (options.mode == 'IPv4') ? response.response.ip : response.response;
+          res.ip = (options.mode == 'ipv4') ? response.response.ip : response.response;
         } else {
           res = response.response;
         }
