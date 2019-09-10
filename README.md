@@ -36,6 +36,9 @@ Yes, this module works in both Node and browser environments, including compatab
   * Blazingly fast public IP check
   * Use this to confirm you are connecting through the proxy!
 
+### Getting an API key
+You can use so much of `proxifly` for free, but if you want to do some advanced stuff, you'll need an API key. You can get one by signing up for an account at [https://proxifly.com/signup](https://proxifly.com/signup).
+
 ## Install Proxifly
 ### Install via npm
 Install with npm if you plan to use `proxifly` in a Node project or in the browser.
@@ -71,7 +74,7 @@ var options = {
   protocol: 'https', // http | https | socks4 | socks4a | socks5 | socks5h
   anonymity: 'elite', // transparent | anonymous | elite
   country: 'US', // https://www.nationsonline.org/oneworld/country_code_list.htm
-  speed: 45, // 1 - 120
+  speed: 10000, // 0 - 60000
   format: 'json', // json | text
   quantity: 1, // 1 - 20
 };
@@ -93,15 +96,17 @@ The options for `getProxy(options)` are as follows.
 * country `string` (optional): Filter by country.
   * Values: `US`, `CA`, `RU`... (see full list at https://www.nationsonline.org/oneworld/country_code_list.htm)
   * Default: `US`
-* speed `number` (optional): Filter by speed, value is in seconds taken to connect.
-  * Values: `1` - `120`
-  * Default: `45`
+* speed `number` (optional): Filter by speed, value is in _milliseconds_ taken to connect.
+  * Values: `0` - `60000`
+  * Default: `10000`
+  * Note: Specifying a very low number (less than ~400) will return significantly fewer results
 * quantity `format` (optional): The response type.
   * Values: `json`,  `text`  
   * Default: `json`
 * quantity `number` (optional): The number of proxies to be returned. Any number greater than `1` will be returned in an `array`.
   * Values: `1` - `20`  
   * Default: `1`
+  * Note: Without an API key, you cannot return more than `1` result.
 
 ### getPublicIp()
 Get your public IP with a simple api call.
@@ -127,48 +132,29 @@ The options for `getProxy(options)` are as follows.
 
 
 ## Extending Capabilities
-
-### Simple Promise Wrapper
-We built `proxifly` without `Promises` because we know not everyone uses an environment that supports `Promises`, but you can **easily** implement this with only a few lines of code!
+### Using Proxifly with promises
+We built `proxifly` to have optional `Promises` support because we know not everyone uses an environment that supports `Promises`.You can **easily** enable this with one additional option.
 ```js
-function getPublicIp(options) {
-  return new Promise((resolve, reject) => {
-    proxifly.getPublicIp(options, function (error, response) {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(response);
-      }
-    })
-  })
-}
+const proxifly = new (require('proxifly'))({
+  promises: true, // enable Promises instead of callbacks
+  // ... your other options here too
+});
 
-function getProxy(options) {
-  return new Promise((resolve, reject) => {
-    proxifly.getProxy(options, function (error, response) {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(response);
-      }
-    })
-  })
-}
+proxifly.getProxy({format: 'json'})
+.then(function (response) {
+  console.log('A fresh proxy:', response);
+})
+.catch(function (error) {
+  console.error('Error:', error);
+})
 
-getPublicIp({})
-  .then(function (response) {
-    console.log('getPublicIp (promise):', response.ip);
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
-getProxy({})
-  .then(function (response) {
-    console.log('getProxy (promise):', response.ipPort);
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
+
+proxifly.getPublicIp({format: 'json'})
+.then(function (response) {
+  console.log('My public IP is:', response);
+})
+.catch(function (error) {
+  console.error('Error:', error);
 })
 ```
 

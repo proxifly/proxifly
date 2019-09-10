@@ -43,10 +43,23 @@
     this.options.environment = this.options.environment || environment;
     this.options.apiKey = this.options.apiKey || '';
     this.options.debug = typeof this.options.debug !== 'undefined' ? this.options.debug : false;
-    console.log(this.options);
+    this.options.promises = typeof this.options.promises !== 'undefined' ? this.options.promises : false;
+    if (this.options.debug) {
+      console.log('Proxifly options:', this.options);
+    }
   };
 
   var parse = function (req) {
+    var result;
+    try {
+      result = JSON.parse(req);
+    } catch (e) {
+      result = req;
+    }
+    return [result, req];
+  };
+
+  var parseDELETE = function (req) {
     var result;
     try {
       result = JSON.parse(req.responseText);
@@ -56,30 +69,53 @@
     return [result, req];
   };
 
-  // var parseDELETE = function (req) {
-  //   var result;
-  //   try {
-  //     result = JSON.parse(req.responseText);
-  //   } catch (e) {
-  //     result = req.responseText;
-  //   }
-  //   return [result, req];
-  // };
 
 
+  // Proxifly.prototype.getProxy = function(options, callback) {
+  //   var This = this;
+  //   options = options || {};
+  //   options.format = (options.format || 'json').toLowerCase();
+  //
+  //   // options.quantity = options.quantity || 1;
+  //
+  //   return serverRequest(This, {host: 'api.proxifly.com', path: '/getProxy', method: 'POST'}, options, function (response) {
+  //     if (This.options.promises) {
+  //       return new Promise((resolve, reject) => {
+  //         if (response.error) {
+  //           reject(response.error);
+  //         } else {
+  //           resolve(response.response);
+  //         }
+  //       })
+  //     } else {
+  //       return callback ? callback(response.error, response.response) : response;
+  //     }
+  //     // return callback ? callback({error: response.error, data: response.response}) : response;
+  //   })
+  //
+  // }
 
   Proxifly.prototype.getProxy = function(options, callback) {
     var This = this;
     options = options || {};
     options.format = (options.format || 'json').toLowerCase();
-    
-    // options.quantity = options.quantity || 1;
+    var conf = {host: 'api.proxifly.com', path: '/getProxy', method: 'POST'}
 
-    return serverRequest(This, {host: 'api.proxifly.com', path: '/getProxy', method: 'POST'}, options, function (response) {
-      return callback ? callback(response.error, response.response) : response;
-      // return callback ? callback({error: response.error, data: response.response}) : response;
-    })
-
+    if (This.options.promises) {
+      return new Promise((resolve, reject) => {
+        return serverRequest(This, conf, options, function (response) {
+          if (response.error) {
+            reject(response.error);
+          } else {
+            resolve(response.response);
+          }
+        })
+      })
+    } else {
+      return serverRequest(This, conf, options, function (response) {
+        return callback ? callback(response.error, response.response) : response;
+      })
+    }
   }
 
   Proxifly.prototype.getPublicIp = function(options, callback) {
@@ -87,27 +123,67 @@
     options = options || {};
     options.mode = (options.mode || 'IPv4').toLowerCase();
     options.format = (options.format || 'json').toLowerCase();
-    var host = (options.mode == 'ipv4') ? 'api.proxifly.com' : 'api6.ipify.org';
-    var path = (options.mode == 'ipv4') ? '/getPublicIp' : '/';
-    var method = (options.mode == 'ipv4') ? 'POST' : 'GET';
+    var conf = {
+      host: (options.mode == 'ipv4') ? 'api.proxifly.com' : 'api6.ipify.org',
+      path: (options.mode == 'ipv4') ? '/getPublicIp' : '/',
+      method: (options.mode == 'ipv4') ? 'POST' : 'GET'
+    };
 
-    return serverRequest(This, {host: host, path: path, method: method}, options, function (response) {
-      if (!response.error) {
-        var res = {};
-        if (options.format == 'json') {
-          res.ip = (options.mode == 'ipv4') ? response.response.ip : response.response;
-        } else {
-          res = response.response;
-        }
+    if (This.options.promises) {
+      return new Promise((resolve, reject) => {
+        return serverRequest(This, conf, options, function (response) {
+          if (response.error) {
+            reject(response.error);
+          } else {
+            resolve(ipvxFix(options, response));
+          }
+        })
+      })
+    } else {
+      return serverRequest(This, conf, options, function (response) {
+        var res = (!response.error) ? ipvxFix(options, response) : {};
         return callback ? callback(response.error, res) : response;
+      })
+    }
 
-        // return callback ? callback({error: response.error, data: res}) : response;
-      } else {
-        return callback ? callback(response.error) : response;
-        // return callback ? callback({error: response.error}) : response;
-      }
-    })
   }
+
+  function ipvxFix(options, response) {
+    var res = {};
+    if (options.format == 'json') {
+      res.ip = (options.mode == 'ipv4') ? response.response.ip : response.response;
+    } else {
+      res = response.response;
+    }
+    return res;
+  }
+
+  // Proxifly.prototype.getPublicIp = function(options, callback) {
+  //   var This = this;
+  //   options = options || {};
+  //   options.mode = (options.mode || 'IPv4').toLowerCase();
+  //   options.format = (options.format || 'json').toLowerCase();
+  //   var host = (options.mode == 'ipv4') ? 'api.proxifly.com' : 'api6.ipify.org';
+  //   var path = (options.mode == 'ipv4') ? '/getPublicIp' : '/';
+  //   var method = (options.mode == 'ipv4') ? 'POST' : 'GET';
+  //
+  //   return serverRequest(This, {host: host, path: path, method: method}, options, function (response) {
+  //     if (!response.error) {
+  //       var res = {};
+  //       if (options.format == 'json') {
+  //         res.ip = (options.mode == 'ipv4') ? response.response.ip : response.response;
+  //       } else {
+  //         res = response.response;
+  //       }
+  //       return callback ? callback(response.error, res) : response;
+  //
+  //       // return callback ? callback({error: response.error, data: res}) : response;
+  //     } else {
+  //       return callback ? callback(response.error) : response;
+  //       // return callback ? callback({error: response.error}) : response;
+  //     }
+  //   })
+  // }
 
   function serverRequest(This, reqObj, payload, callback) {
       var content = 'application/json';
@@ -126,7 +202,7 @@
           var req;
           if (request.readyState === 4) {
             // console.log('request', request);
-            req = parse(request);
+            req = parse(request.responseText);
             // console.log('req', req);
             if (request.status >= 200 && request.status < 300) {
               callback({error: false, request: request, response: req[0]})
@@ -170,7 +246,15 @@
           });
           res.on('end', function() {
             // console.log('END > ', full.toString());
-            var resData = JSON.parse(full.toString());
+            // var resData = JSON.parse(full.toString());
+            // console.log('options', This.options);
+            // console.log('full', full);
+            // console.log('full.toString()', full.toString());
+            // console.log('JSON.parse(full)', JSON.parse(full));
+            // console.log('parse(full)', parse(full));
+            var resData = parse(full.toString())[0];
+            // console.log(resData[0], resData[1]);
+
             // console.log('resData', resData);
             if (resData) {
               callback({error: false, request: req, response: resData});
