@@ -44,6 +44,7 @@
     this.options.apiKey = this.options.apiKey || '';
     this.options.debug = typeof this.options.debug !== 'undefined' ? this.options.debug : false;
     this.options.promises = typeof this.options.promises !== 'undefined' ? this.options.promises : false;
+    // this.options.tags = typeof this.options.tags !== 'undefined' ? this.options.tags : undefined;
     if (this.options.debug) {
       console.log('Proxifly options:', this.options);
     }
@@ -69,32 +70,6 @@
     return [result, req];
   };
 
-
-
-  // Proxifly.prototype.getProxy = function(options, callback) {
-  //   var This = this;
-  //   options = options || {};
-  //   options.format = (options.format || 'json').toLowerCase();
-  //
-  //   // options.quantity = options.quantity || 1;
-  //
-  //   return serverRequest(This, {host: 'api.proxifly.com', path: '/getProxy', method: 'POST'}, options, function (response) {
-  //     if (This.options.promises) {
-  //       return new Promise((resolve, reject) => {
-  //         if (response.error) {
-  //           reject(response.error);
-  //         } else {
-  //           resolve(response.response);
-  //         }
-  //       })
-  //     } else {
-  //       return callback ? callback(response.error, response.response) : response;
-  //     }
-  //     // return callback ? callback({error: response.error, data: response.response}) : response;
-  //   })
-  //
-  // }
-
   Proxifly.prototype.getProxy = function(options, callback) {
     var This = this;
     options = options || {};
@@ -102,7 +77,7 @@
     var conf = {host: 'api.proxifly.com', path: '/getProxy', method: 'POST'}
 
     if (This.options.promises) {
-      return new Promise((resolve, reject) => {
+      return new Promise(function(resolve, reject) {
         return serverRequest(This, conf, options, function (response) {
           if (response.error) {
             reject(response.error);
@@ -122,15 +97,24 @@
     var This = this;
     options = options || {};
     options.mode = (options.mode || 'IPv4').toLowerCase();
+    options.method = (options.method || 'POST').toUpperCase();
+    options.service = (options.service || 'proxifly').toLowerCase();
     options.format = (options.format || 'json').toLowerCase();
+    options.timeout = typeof options.timeout !== 'undefined' ? options.timeout : 0;
     var conf = {
-      host: (options.mode == 'ipv4') ? 'api.proxifly.com' : 'api6.ipify.org',
-      path: (options.mode == 'ipv4') ? '/getPublicIp' : '/',
-      method: (options.mode == 'ipv4') ? 'POST' : 'GET'
+      host: (options.mode == 'ipv6') ? 'api6.ipify.org' : 'api.proxifly.com',
+      path: (options.mode == 'ipv6') ? '/' : '/getPublicIp',
+      method: (options.mode == 'ipv6') ? 'GET' : 'POST',
+      service: (options.service == 'proxifly') ? 'proxifly' : 'ipify',
     };
+    if (conf.service == 'ipify') {
+      conf.method = 'GET';
+      conf.host = (options.mode == 'ipv6') ? 'api6.ipify.org' : 'api.ipify.org';
+      conf.path = '/';
+    }
 
     if (This.options.promises) {
-      return new Promise((resolve, reject) => {
+      return new Promise(function(resolve, reject) {
         return serverRequest(This, conf, options, function (response) {
           if (response.error) {
             reject(response.error);
@@ -188,13 +172,14 @@
   function serverRequest(This, reqObj, payload, callback) {
       var content = 'application/json';
       if (This.options.environment == 'browser') {
+        var addy = 'https://' + reqObj.host + reqObj.path;
         if (This.options.debug) {
-          console.log('Browser request...');
+          console.log('Browser request...', addy);
         }
         var XHR = window.XMLHttpRequest || XMLHttpRequest || ActiveXObject;
         var request = new XHR('MSXML2.XMLHTTP.3.0');
 
-        request.open(reqObj.method, 'https://' + reqObj.host + reqObj.path, true);
+        request.open(reqObj.method, addy, true);
         request.setRequestHeader('Content-type', content);
         request.setRequestHeader('Accept', content);
         // request.setRequestHeader('Access-Control-Allow-Origin', '*');
@@ -220,10 +205,6 @@
 
         request.send(payload);
       } else {
-        if (This.options.debug) {
-          console.log('Node request...');
-        }
-        var https = require('https');
         var options = {
           hostname: reqObj.host,
           // hostname: 'api.INCORRECTTEST.com',
@@ -235,6 +216,11 @@
             'Accept': content,
           }
         };
+        if (This.options.debug) {
+          console.log('Node request...', options);
+        }
+        var https = require('https');
+
 
         var globalRes;
         var full = '';
