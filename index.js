@@ -110,7 +110,7 @@
     if (conf.service == 'ipify') {
       conf.method = 'GET';
       conf.host = (options.mode == 'ipv6') ? 'api6.ipify.org' : 'api.ipify.org';
-      conf.path = '/';
+      conf.path = (options.format == 'json') ? '/?format=json' : '/';
     }
 
     if (This.options.promises) {
