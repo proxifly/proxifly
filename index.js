@@ -66,6 +66,8 @@
     var This = this;
     options = options || {};
     options.format = (options.format || 'json').toLowerCase();
+    options.apiKey = This.options.apiKey;
+    // payload.endpoint = payload.endpoint || 'api.proxifly.com';
     var conf = {host: 'api.proxifly.com', path: '/getProxy', method: 'POST'}
 
     if (This.options.promises) {
@@ -93,6 +95,8 @@
     options.service = (options.service || 'proxifly').toLowerCase();
     options.format = (options.format || 'json').toLowerCase();
     options.timeout = typeof options.timeout !== 'undefined' ? options.timeout : 0;
+    options.apiKey = This.options.apiKey;
+
     var conf = {
       host: (options.mode == 'ipv6') ? 'api6.ipify.org' : 'api.proxifly.com',
       path: (options.mode == 'ipv6') ? '/' : '/getPublicIp',
@@ -138,6 +142,7 @@
     var This = this;
     options = options || {};
     // options.format = (options.format || 'json').toLowerCase();
+    options.apiKey = This.options.apiKey;
     var conf = {host: 'api.proxifly.com', path: '/addProxy', method: 'POST'}
 
     if (This.options.promises) {
@@ -161,6 +166,7 @@
       var content = 'application/json';
       if (This.options.environment == 'browser') {
         var addy = 'https://' + reqObj.host + reqObj.path;
+        // var addy = 'http://localhost:5000/getProxy';
         if (This.options.debug) {
           console.log('Browser request...', addy);
         }
@@ -195,8 +201,10 @@
       } else {
         var options = {
           hostname: reqObj.host,
+          // hostname: 'localhost',
           // hostname: 'api.INCORRECTTEST.com',
           // port: 443,
+          // port: 5000,
           path: reqObj.path,
           method: reqObj.method,
           headers: {
