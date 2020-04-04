@@ -65,10 +65,16 @@
   Proxifly.prototype.getProxy = function(options, callback) {
     var This = this;
     options = options || {};
+    options.config = options.config || {};
     options.format = (options.format || 'json').toLowerCase();
     options.apiKey = This.options.apiKey;
     // payload.endpoint = payload.endpoint || 'api.proxifly.com';
-    var conf = {host: 'api.proxifly.com', path: '/getProxy', method: 'POST'}
+    var conf = {
+      host: options.config.host || 'api.proxifly.com',
+      path: options.config.path || '/getProxy',
+      protocol: options.config.protocol || 'https://',
+      method: 'POST'
+    }
 
     if (This.options.promises) {
       return new Promise(function(resolve, reject) {
@@ -165,7 +171,7 @@
   function serverRequest(This, reqObj, payload, callback) {
       var content = 'application/json';
       if (This.options.environment == 'browser') {
-        var addy = 'https://' + reqObj.host + reqObj.path;
+        var addy = (reqObj.protocol || 'https://') + reqObj.host + reqObj.path;
         // var addy = 'http://localhost:5000/getProxy';
         if (This.options.debug) {
           console.log('Browser request...', addy);
