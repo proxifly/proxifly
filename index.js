@@ -52,16 +52,6 @@
     return [result, req];
   };
 
-  var parseDELETE = function (req) {
-    var result;
-    try {
-      result = JSON.parse(req.responseText);
-    } catch (e) {
-      result = req.responseText;
-    }
-    return [result, req];
-  };
-
   Proxifly.prototype.getProxy = function(options, callback) {
     var This = this;
     options = options || {};
@@ -71,7 +61,7 @@
     // payload.endpoint = payload.endpoint || 'api.proxifly.com';
     var conf = {
       host: options.config.host || 'api.proxifly.com',
-      path: options.config.path || '/getProxy',
+      path: options.config.path || '/get-proxy',
       protocol: options.config.protocol || 'https://',
       method: 'POST'
     }
@@ -105,7 +95,7 @@
 
     var conf = {
       host: (options.mode == 'ipv6') ? 'api6.ipify.org' : 'api.proxifly.com',
-      path: (options.mode == 'ipv6') ? '/' : '/getPublicIp',
+      path: (options.mode == 'ipv6') ? '/' : '/get-public-ip',
       method: (options.mode == 'ipv6') ? 'GET' : 'POST',
       service: (options.service == 'proxifly') ? 'proxifly' : 'ipify',
     };
@@ -149,7 +139,7 @@
     options = options || {};
     // options.format = (options.format || 'json').toLowerCase();
     options.apiKey = This.options.apiKey;
-    var conf = {host: 'api.proxifly.com', path: '/addProxy', method: 'POST'}
+    var conf = {host: 'api.proxifly.com', path: '/add-proxy', method: 'POST'}
 
     if (This.options.promises) {
       return new Promise(function(resolve, reject) {
@@ -172,7 +162,7 @@
       var content = 'application/json';
       if (This.options.environment == 'browser') {
         var addy = (reqObj.protocol || 'https://') + reqObj.host + reqObj.path;
-        // var addy = 'http://localhost:5000/getProxy';
+        // var addy = 'http://localhost:5000/get-proxy';
         if (This.options.debug) {
           console.log('Browser request...', addy);
         }
