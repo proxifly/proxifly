@@ -134,12 +134,12 @@
     return res;
   }
 
-  Proxifly.prototype.fieldTestProxy = function(options, callback) {
+  Proxifly.prototype.verifyProxy = function(options, callback) {
     var This = this;
     options = options || {};
     // options.format = (options.format || 'json').toLowerCase();
     options.apiKey = This.options.apiKey;
-    var conf = {host: 'api.proxifly.com', path: '/field-test-proxy', method: 'POST'}
+    var conf = {host: 'api.proxifly.com', path: '/verify-proxy', method: 'POST'}
 
     if (This.options.promises) {
       return new Promise(function(resolve, reject) {
