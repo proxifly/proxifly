@@ -1,29 +1,29 @@
-<div align="center">
+<p align="center">
   <a href="https://cdn.itwcreativeworks.com/assets/proxifly/images/logo/proxifly-brandmark-black-x.svg">
     <img src="https://cdn.itwcreativeworks.com/assets/proxifly/images/logo/proxifly-brandmark-black-x.svg">
   </a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/github/package-json/v/proxifly/proxifly.svg">
+  <br>
+  <img src="https://img.shields.io/david/proxifly/proxifly.svg">
+  <img src="https://img.shields.io/david/dev/proxifly/proxifly.svg">
+  <img src="https://img.shields.io/bundlephobia/min/proxifly.svg">
+  <img src="https://img.shields.io/codeclimate/maintainability-percentage/proxifly/proxifly.svg">
+  <img src="https://img.shields.io/npm/dm/proxifly.svg">
+  <img src="https://img.shields.io/node/v/proxifly.svg">
+  <img src="https://img.shields.io/website/https/proxifly.com.svg">
+  <img src="https://img.shields.io/github/license/proxifly/proxifly.svg">
+  <img src="https://img.shields.io/github/contributors/proxifly/proxifly.svg">
+  <img src="https://img.shields.io/github/last-commit/proxifly/proxifly.svg">
   <br>
   <br>
-
-![GitHub package.json version](https://img.shields.io/github/package-json/v/proxifly/proxifly.svg)
-
-![David](https://img.shields.io/david/proxifly/proxifly.svg)
-![David](https://img.shields.io/david/dev/proxifly/proxifly.svg) <!-- ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/proxifly/proxifly.svg) -->
-![npm bundle size](https://img.shields.io/bundlephobia/min/proxifly.svg)
-![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability-percentage/proxifly/proxifly.svg)
-![npm](https://img.shields.io/npm/dm/proxifly.svg) <!-- [![NPM total downloads](https://img.shields.io/npm/dt/proxifly.svg?style=flat)](https://npmjs.org/package/proxifly) -->
-![node](https://img.shields.io/node/v/proxifly.svg)
-![Website](https://img.shields.io/website/https/itwcreativeworks.com.svg)
-![GitHub](https://img.shields.io/github/license/proxifly/proxifly.svg)
-![GitHub contributors](https://img.shields.io/github/contributors/proxifly/proxifly.svg)
-![GitHub last commit](https://img.shields.io/github/last-commit/proxifly/proxifly.svg)
-
-# Proxifly
-**proxifly** is the official npm module of [Proxifly](https://proxifly.com), a free service to get SOCKS, HTTP, & HTTPS proxies as well as to check your public IP!
-
-[Site](https://proxifly.com) | [NPM Module](https://www.npmjs.com/package/proxifly) | [GitHub Repo](https://github.com/proxifly/proxifly)
-
-</div>
+  <a href="https://proxifly.com">Site</a> | <a href="https://www.npmjs.com/package/proxifly">NPM Module</a> | <a href="https://github.com/proxifly/proxifly">GitHub Repo</a>
+  <br>
+  <br>
+  <strong>proxifly</strong> is the official npm module of <a href="https://proxifly.com">Proxifly</a>, a free service to get SOCKS, HTTP, & HTTPS proxies as well as to check your public IP!
+</p>
 
 ## Proxifly Works in Node AND browser environments
 Yes, this module works in both Node and browser environments, including compatability with [Webpack](https://www.npmjs.com/package/webpack) and [Browserify](https://www.npmjs.com/package/browserify)!
