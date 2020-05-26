@@ -18,7 +18,7 @@
 
   this.extra = '17'; //@@@ Delete later
 
-  if (environment == 'browser') {
+  if (environment === 'browser') {
     registerName();
   }
 
@@ -94,15 +94,15 @@
     options.apiKey = This.options.apiKey;
 
     var conf = {
-      host: (options.mode == 'ipv6') ? 'api6.ipify.org' : 'api.proxifly.com',
-      path: (options.mode == 'ipv6') ? '/' : '/get-public-ip',
-      method: (options.mode == 'ipv6') ? 'GET' : 'POST',
-      service: (options.service == 'proxifly') ? 'proxifly' : 'ipify',
+      host: (options.mode === 'ipv6') ? 'api6.ipify.org' : 'api.proxifly.com',
+      path: (options.mode === 'ipv6') ? '/' : '/get-public-ip',
+      method: (options.mode === 'ipv6') ? 'GET' : 'POST',
+      service: (options.service === 'proxifly') ? 'proxifly' : 'ipify',
     };
-    if (conf.service == 'ipify') {
+    if (conf.service === 'ipify') {
       conf.method = 'GET';
-      conf.host = (options.mode == 'ipv6') ? 'api6.ipify.org' : 'api.ipify.org';
-      conf.path = (options.format == 'json') ? '/?format=json' : '/';
+      conf.host = (options.mode === 'ipv6') ? 'api6.ipify.org' : 'api.ipify.org';
+      conf.path = (options.format === 'json') ? '/?format=json' : '/';
     }
 
     if (This.options.promises) {
@@ -126,8 +126,9 @@
 
   function ipvxFix(options, response) {
     var res = {};
-    if (options.format == 'json') {
-      res.ip = (options.mode == 'ipv4') ? response.response.ip : response.response;
+    if (options.format === 'json') {
+      res.ip = (options.mode === 'ipv4') ? response.response.ip : response.response;
+      if (response.response.country) {res.country = response.response.country};
     } else {
       res = response.response;
     }
@@ -160,7 +161,7 @@
 
   function serverRequest(This, reqObj, payload, callback) {
       var content = 'application/json';
-      if (This.options.environment == 'browser') {
+      if (This.options.environment === 'browser') {
         var addy = (reqObj.protocol || 'https://') + reqObj.host + reqObj.path;
         // var addy = 'http://localhost:5000/get-proxy';
         if (This.options.debug) {
