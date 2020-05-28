@@ -16,8 +16,6 @@
 
   var environment = (Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]') ? 'node' : 'browser';
 
-  this.extra = '17'; //@@@ Delete later
-
   if (environment === 'browser') {
     registerName();
   }
@@ -40,6 +38,7 @@
     if (this.options.debug) {
       console.log('Proxifly options:', this.options);
     }
+    this._verifiedProxyList = [];
   };
 
   var parse = function (req) {
@@ -141,22 +140,45 @@
     // options.format = (options.format || 'json').toLowerCase();
     options.apiKey = This.options.apiKey;
     var conf = {host: 'api.proxifly.com', path: '/verify-proxy', method: 'POST'}
+    let exists = This._verifiedProxyList.find(function (item) {
+      return item && item.proxy === options.proxy;
+    })
+
+    This._verifiedProxyList = This._verifiedProxyList.filter(function(item, index) {
+      return (Math.abs(item.timestamp - new Date()) / (1000 * 60)) < 5
+    })
 
     if (This.options.promises) {
       return new Promise(function(resolve, reject) {
+        if (exists) {
+          return reject("Skipping because recently added.")
+        }
+
         return serverRequest(This, conf, options, function (response) {
           if (response.error) {
             reject(response.error);
           } else {
+            addProxyToVerifiedList(This, options.proxy);
             resolve(response.response);
           }
         })
       })
     } else {
+      if (exists) {
+        return callback("Skipping because recently added.", {})
+      }
       return serverRequest(This, conf, options, function (response) {
+        addProxyToVerifiedList(This, options.proxy);
         return callback ? callback(response.error, response.response) : response;
       })
     }
+  }
+
+  function addProxyToVerifiedList(This, proxy) {
+    This._verifiedProxyList = This._verifiedProxyList.concat({
+      proxy: proxy,
+      timestamp: new Date(),
+    });
   }
 
   function serverRequest(This, reqObj, payload, callback) {
@@ -177,17 +199,11 @@
         request.onreadystatechange = function () {
           var req;
           if (request.readyState === 4) {
-            // console.log('request', request);
             req = parse(request.responseText);
-            // console.log('req', req);
             if (request.status >= 200 && request.status < 300) {
-              callback({error: false, request: request, response: req[0]})
-              // return {error: false, req: resData, res: resData[0]};
-              // resolve([req, req[]]);
+              callback({error: null, request: request, response: req[0]})
             } else {
-              callback({error: true, request: request});
-              // return {error: true, req: resData};
-              // reject({req: req});
+              callback({error: parse(request.responseText)[0], request: request});
             }
           }
         };
@@ -224,31 +240,17 @@
             full += chunk;
           });
           res.on('end', function() {
-            // console.log('END > ', full.toString());
-            // var resData = JSON.parse(full.toString());
-            // console.log('options', This.options);
-            // console.log('full', full);
-            // console.log('full.toString()', full.toString());
-            // console.log('JSON.parse(full)', JSON.parse(full));
-            // console.log('parse(full)', parse(full));
             var resData = parse(full.toString())[0];
-            // console.log(resData[0], resData[1]);
-
-            // console.log('resData', resData);
-            if (resData) {
-              callback({error: false, request: req, response: resData});
-              // return {error: false, req: resData, res: resData[0]};
-              // resolve({req: resData, response: resData[0]});
+            if (res.statusCode >= 200 && res.statusCode < 300) {
+              callback({error: null, request: req, response: resData});
             } else {
-              callback({error: true, request: req});
-              // return {error: true, req: resData};
-              // reject({req: resData});
+              callback({error: resData, request: req});
             }
           });
 
         });
         req.on('error', function(e) {
-          callback({error: e});
+          callback({error: e, request: req});
         });
 
         payload = stringifyData(payload);
