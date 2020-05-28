@@ -87,18 +87,18 @@ proxifly.getProxy(options, function (error, response) {
 ```
 ### options
 The options for `getProxy(options)` are as follows.
-* protocol `string` (optional): Filter by the protocol
+* protocol `string`, `array` (optional): Filter by the protocol
   * Values: `http`, `https`, `socks4`, `socks4a`, `socks5`, `socks5h`
   * Default: `https`
-* anonymity `string` (optional): Filter by anonymity level.
+* anonymity `string`, `array` (optional): Filter by anonymity level.
   * Values: `transparent`, `anonymous`, `elite` (`elite` is the most anonymous)
-  * Default: `transparent`
-* country `string` (optional): Filter by country.
+  * Default: `null` (no filter, any anonymity)
+* country `string`, `array` (optional): Filter by country.
   * Values: `US`, `CA`, `RU`... (see full list at https://www.nationsonline.org/oneworld/country_code_list.htm)
-  * Default: `US`
+  * Default: `null` (no filter, any country)
 * speed `number` (optional): Filter by speed, value is in _milliseconds_ taken to connect.
   * Values: `0` - `60000`
-  * Default: `10000`
+  * Default: `null` (no filter, any speed)
   * Note: Specifying a very low number (less than ~400) will return significantly fewer results
 * quantity `format` (optional): The response type.
   * Values: `json`,  `text`  
@@ -107,6 +107,17 @@ The options for `getProxy(options)` are as follows.
   * Values: `1` - `20`  
   * Default: `1`
   * Note: Without an API key, you cannot return more than `1` result.
+
+For most options like `protocol`, `anonymity`, and `country`, you can provide an `array` where each element in the array will act as `OR` logic.
+For example:
+```js
+var options = {
+  protocol: ['https', 'socks4'],
+  anonymity: ['anonymous', 'elite'],
+  country: ['US', 'GB', 'RU'],
+}
+```
+This filter will call the API for any proxies that are either of protocol (`https` OR `socks4`) AND of anonymity (`anonymous` OR `elite`) AND from (`US` OR `GB` OR `RU`)!
 
 ### getPublicIp()
 Get your public IP with a simple api call.
