@@ -27,6 +27,8 @@
     }
   }
 
+  var DEFAULT_ERROR = 'There was an unknown error.';
+
   function Proxifly(options) {
     // options = options || {};
     this.options = options || {};
@@ -107,6 +109,7 @@
     if (This.options.promises) {
       return new Promise(function(resolve, reject) {
         return serverRequest(This, conf, options, function (response) {
+          // console.log('---response.error', response.error);
           if (response.error) {
             reject(response.error);
           } else {
@@ -116,7 +119,8 @@
       })
     } else {
       return serverRequest(This, conf, options, function (response) {
-        var res = (!response.error) ? ipvxFix(options, response) : {};
+        var res = (response.error) ? {} : ipvxFix(options, response);
+        // console.log('---response.error', response.error);
         return callback ? callback(response.error, res) : response;
       })
     }
@@ -126,6 +130,8 @@
   function ipvxFix(options, response) {
     var res = {};
     if (options.format === 'json') {
+      // console.log('response', response);
+      // console.log('response.response', response.response);
       res.ip = (options.mode === 'ipv4') ? response.response.ip : response.response;
       if (response.response.country) {res.country = response.response.country};
     } else {
@@ -140,7 +146,7 @@
     // options.format = (options.format || 'json').toLowerCase();
     options.apiKey = This.options.apiKey;
     var conf = {host: 'api.proxifly.com', path: '/verify-proxy', method: 'POST'}
-    let exists = This._verifiedProxyList.find(function (item) {
+    var exists = This._verifiedProxyList.find(function (item) {
       return item && item.proxy === options.proxy;
     })
 
@@ -201,9 +207,11 @@
           if (request.readyState === 4) {
             req = parse(request.responseText);
             if (request.status >= 200 && request.status < 300) {
+              // console.log('---GOT HERE 1');
               callback({error: null, request: request, response: req[0]})
             } else {
-              callback({error: parse(request.responseText)[0], request: request});
+              // console.log('---GOT HERE 2');
+              callback({error: new Error(parse(request.responseText)[0] || DEFAULT_ERROR), request: request});
             }
           }
         };
@@ -211,6 +219,7 @@
         payload = stringifyData(payload);
 
         request.send(payload);
+
       } else {
         var options = {
           hostname: reqObj.host,
