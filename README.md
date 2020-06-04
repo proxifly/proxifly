@@ -174,8 +174,8 @@ proxifly.getPublicIp({format: 'json'})
 
 For a more in-depth documentation of this library and the Proxifly service, please visit the official Proxifly website.
 
-### Use without installation
-## Use Proxifly with `curl`
+## Use without installation
+### Use Proxifly with `curl`
 ```shell
 # Get public IP
 # Standard
