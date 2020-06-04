@@ -207,10 +207,10 @@
           if (request.readyState === 4) {
             req = parse(request.responseText);
             if (request.status >= 200 && request.status < 300) {
-              // console.log('---GOT HERE 1');
+              // console.log('SUCCESS', request);
               callback({error: null, request: request, response: req[0]})
             } else {
-              // console.log('---GOT HERE 2');
+              // console.log('ERROR', request);
               callback({error: new Error(parse(request.responseText)[0] || DEFAULT_ERROR), request: request});
             }
           }

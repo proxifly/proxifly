@@ -64,6 +64,9 @@ Install with CDN if you plan to use Proxifly only in a browser environment.
 </script>
 ```
 
+### Use without installation
+You can use **Proxifly** in a variety of ways that require no installation, such as `curl` in terminal/shell. See the **Use without installation** section below.
+
 
 ## Using Proxifly
 After you have followed the install step, you can start using `proxifly` to get proxy lists and check your public IP!
@@ -100,7 +103,7 @@ The options for `getProxy(options)` are as follows.
   * Values: `0` - `60000`
   * Default: `null` (no filter, any speed)
   * Note: Specifying a very low number (less than ~400) will return significantly fewer results
-* quantity `format` (optional): The response type.
+* format `string` (optional): The response type.
   * Values: `json`,  `text`  
   * Default: `json`
 * quantity `number` (optional): The number of proxies to be returned. Any number greater than `1` will be returned in an `array`.
@@ -134,17 +137,17 @@ proxifly.getPublicIp(options, function (error, response) {
 ```
 ### options
 The options for `getProxy(options)` are as follows.
-* quantity `mode` (optional): IPv4 IP or IPv6 IP?
+* mode `string` (optional): IPv4 IP or IPv6 IP?
   * Values: `IPv4`,  `IPv6`  
   * Default: `IPv4`
-* quantity `format` (optional): The response type.
+* format `string` (optional): The response type.
   * Values: `json`,  `text`  
   * Default: `json`
 
 
 ## Extending Capabilities
 ### Using Proxifly with promises
-We built `proxifly` to have optional `Promises` support because we know not everyone uses an environment that supports `Promises`.You can **easily** enable this with one additional option.
+We built `proxifly` to have optional `Promises` support because we know not everyone uses an environment that supports `Promises`. You can **easily** enable this with one additional option.
 ```js
 const proxifly = new (require('proxifly'))({
   promises: true, // enable Promises instead of callbacks
@@ -170,6 +173,27 @@ proxifly.getPublicIp({format: 'json'})
 ```
 
 For a more in-depth documentation of this library and the Proxifly service, please visit the official Proxifly website.
+
+### Use without installation
+## Use Proxifly with `curl`
+```shell
+# Get public IP
+# Standard
+curl -X POST https://api.proxifly.com/get-public-ip
+# With options
+curl -d "format=text&mode=ipv4" -X POST https://api.proxifly.com/get-public-ip
+# With options (alternative)
+curl -d '{"format": "text", "mode": "ipv4"}' -H 'Content-Type: application/json' https://api.proxifly.com/get-public-ip
+
+# Get a proxy
+# Standard
+curl -X POST https://api.proxifly.com/get-proxy
+# With options
+curl -d "format=text&protocol=https&quantity=3" -X POST https://api.proxifly.com/get-proxy
+# With options (alternative)
+curl -d '{"format": "text", "protocol": ["https", "socks4"], "quantity": 3}' -H 'Content-Type: application/json' https://api.proxifly.com/get-proxy
+
+```
 
 ## What Can Proxifly do?
 [Proxifly is a free proxy api](https://proxifly.com) that helps you get free proxy lists and check your public IP.
