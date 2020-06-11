@@ -27,7 +27,9 @@
     }
   }
 
-  var DEFAULT_ERROR = 'There was an unknown error.';
+  var ERROR_DEFAULT = 'There was an unknown error';
+  var ERROR_NO_PROXY = 'No proxy provided';
+  var ERROR_RECENT = 'Proxy was recently verified';
 
   function Proxifly(options) {
     // options = options || {};
@@ -157,7 +159,9 @@
     if (This.options.promises) {
       return new Promise(function(resolve, reject) {
         if (exists) {
-          return reject("Skipping because recently added.")
+          return reject(new Error(ERROR_RECENT))
+        } else if (!options.proxy) {
+          return reject(new Error(ERROR_NO_PROXY))
         }
 
         return serverRequest(This, conf, options, function (response) {
@@ -171,7 +175,9 @@
       })
     } else {
       if (exists) {
-        return callback("Skipping because recently added.", {})
+        return callback(new Error(ERROR_RECENT), {})
+      } else if (!options.proxy) {
+        return callback(new Error(ERROR_NO_PROXY), {})
       }
       return serverRequest(This, conf, options, function (response) {
         addProxyToVerifiedList(This, options.proxy);
@@ -211,7 +217,7 @@
               callback({error: null, request: request, response: req[0]})
             } else {
               // console.log('ERROR', request);
-              callback({error: new Error(parse(request.responseText)[0] || DEFAULT_ERROR), request: request});
+              callback({error: new Error(parse(request.responseText)[0] || ERROR_DEFAULT), request: request});
             }
           }
         };
