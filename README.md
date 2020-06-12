@@ -56,7 +56,7 @@ const proxifly = new (require('proxifly'))({
 ### Install via CDN
 Install with CDN if you plan to use Proxifly only in a browser environment.
 ```html
-<script src="https://cdn.jsdelivr.net/npm/proxifly"></script>
+<script src="https://cdn.jsdelivr.net/npm/proxifly@latest"></script>
 <script type="text/javascript">
   var proxifly = new Proxifly({
     apiKey: 'api_test_Key' // Not required, but having one removes limits (get your key at https://proxifly.com).
