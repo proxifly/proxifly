@@ -16,17 +16,6 @@
 
   var environment = (Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]') ? 'node' : 'browser';
 
-  if (environment === 'browser') {
-    registerName();
-  }
-
-  function registerName() {
-    try {
-      window.Proxifly = Proxifly;
-    } catch (e) {
-    }
-  }
-
   var ERROR_DEFAULT = 'There was an unknown error';
   var ERROR_NO_PROXY = 'No proxy provided';
   var ERROR_RECENT = 'Proxy was recently verified';
@@ -284,6 +273,14 @@
       }
       return data;
     // }
+  }
+
+  // Register
+  if (environment === 'browser') {
+    try {
+      window.Proxifly = Proxifly;
+    } catch (e) {
+    }
   }
 
   // Just return a value to define the module export.
