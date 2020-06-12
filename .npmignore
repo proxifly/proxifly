@@ -13,3 +13,4 @@ Gemfile
 Gemfile.lock
 gulpfile.js
 .codeclimate.yml
+.git
