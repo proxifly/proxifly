@@ -32,9 +32,11 @@ Yes, this module works in both Node and browser environments, including compatab
 * Getting proxy lists
   * An API to get HTTP, HTTPS, and SOCKS proxies
   * Easily filter by country, speed, and anonymity level
+  * Request multiple proxies at a time
 * Check your public IP
   * Blazingly fast public IP check
-  * Use this to confirm you are connecting through the proxy!
+  * Use this to confirm you are connected through the proxy!
+  * Use option `extended=true` to see country, city, zipcode, and latitude/longitude for the IP as well.
 
 ### Getting an API key
 You can use so much of `proxifly` for free, but if you want to do some advanced stuff, you'll need an API key. You can get one by signing up for an account at [https://proxifly.com/signup](https://proxifly.com/signup).
@@ -65,8 +67,7 @@ Install with CDN if you plan to use Proxifly only in a browser environment.
 ```
 
 ### Use without installation
-You can use **Proxifly** in a variety of ways that require no installation, such as `curl` in terminal/shell. See the **Use without installation** section below.
-
+You can use `proxifly` in a variety of ways that require no installation, such as `curl` in terminal/shell. See the **Use without installation** section below.
 
 ## Using Proxifly
 After you have followed the install step, you can start using `proxifly` to get proxy lists and check your public IP!
@@ -122,6 +123,24 @@ var options = {
 ```
 This filter will call the API for any proxies that are either of protocol (`https` OR `socks4`) AND of anonymity (`anonymous` OR `elite`) AND from (`US` OR `GB` OR `RU`)!
 
+### Example output
+Here is a sample response for the `.getProxy()` method. This is the output you will see when `extended=true`:
+```js
+{
+  "ip": "209.99.133.56",
+  "port": "12345",
+  "anonymity": "anonymous",
+  "userAgent": true,
+  "country": "US",
+  "get": true,
+  "post": true,
+  "ipPort": "209.99.133.56:12345",
+  "cookies": true,
+  "protocol": "https",
+  "referrer": true
+}
+```
+
 ### getPublicIp()
 Get your public IP with a simple api call.
 ```js
@@ -145,6 +164,22 @@ The options for `getProxy(options)` are as follows.
   * Default: `json`
 
 
+### Example output
+Here is a sample response for the `.getPublicIp()` method. This is the output you will see when `extended=true`:
+```js
+{
+  "ip": "73.111.121.217",
+  "country": "USA",
+  "state": "California",
+  "city": "San Francisco",
+  "district": "Lower Nob Hill",
+  "zipcode": "94109",
+  "latitude": "37.88619",
+  "longitude": "-122.42311",
+  "isp": "Comcast Cable Communications, LLC"
+}
+```
+
 ## Extending Capabilities
 ### Using Proxifly with promises
 We built `proxifly` to have optional `Promises` support because we know not everyone uses an environment that supports `Promises`. You can **easily** enable this with one additional option.
@@ -161,7 +196,6 @@ proxifly.getProxy({format: 'json'})
 .catch(function (error) {
   console.error('Error:', error);
 })
-
 
 proxifly.getPublicIp({format: 'json'})
 .then(function (response) {
