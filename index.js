@@ -200,12 +200,15 @@
         request.onreadystatechange = function () {
           var req;
           if (request.readyState === 4) {
+            // console.log('--1', request);
             req = parse(request.responseText);
             if (request.status >= 200 && request.status < 300) {
               // console.log('SUCCESS', request);
+              // console.log('--2');
               callback({error: null, request: request, response: req[0]})
             } else {
               // console.log('ERROR', request);
+              // console.log('--3');
               callback({error: new Error(parse(request.responseText)[0] || ERROR_DEFAULT), request: request});
             }
           }
