@@ -75,9 +75,10 @@ After you have followed the install step, you can start using `proxifly` to get 
 Retrieves a fully filterable list of proxies in either `json` or plain `text`.
 ```js
 var options = {
-  protocol: 'https', // http | https | socks4 | socks4a | socks5 | socks5h
+  protocol: 'http', // http | socks4 | socks5
   anonymity: 'elite', // transparent | anonymous | elite
   country: 'US', // https://www.nationsonline.org/oneworld/country_code_list.htm
+  https: true, // true | false
   speed: 10000, // 0 - 60000
   format: 'json', // json | text
   quantity: 1, // 1 - 20
@@ -92,14 +93,17 @@ proxifly.getProxy(options, function (error, response) {
 ### options
 The options for `getProxy(options)` are as follows.
 * protocol `string`, `array` (optional): Filter by the protocol
-  * Values: `http`, `https`, `socks4`, `socks4a`, `socks5`, `socks5h`
-  * Default: `https`
+  * Values: `http`, `socks4`, `socks5`
+  * Default: `http`
 * anonymity `string`, `array` (optional): Filter by anonymity level.
   * Values: `transparent`, `anonymous`, `elite` (`elite` is the most anonymous)
   * Default: `null` (no filter, any anonymity)
 * country `string`, `array` (optional): Filter by country.
   * Values: `US`, `CA`, `RU`... (see full list at https://www.nationsonline.org/oneworld/country_code_list.htm)
   * Default: `null` (no filter, any country)
+* https `boolean` (optional): Filter by https/SSL.
+  * Values: `true`, `false`
+  * Default: `null` (no filter, any level of https)  
 * speed `number` (optional): Filter by speed, value is in _milliseconds_ taken to connect.
   * Values: `0` - `60000`
   * Default: `null` (no filter, any speed)
@@ -116,27 +120,28 @@ For most options like `protocol`, `anonymity`, and `country`, you can provide an
 For example:
 ```js
 var options = {
-  protocol: ['https', 'socks4'],
+  protocol: ['http', 'socks4'],
   anonymity: ['anonymous', 'elite'],
   country: ['US', 'GB', 'RU'],
 }
 ```
-This filter will call the API for any proxies that are either of protocol (`https` OR `socks4`) AND of anonymity (`anonymous` OR `elite`) AND from (`US` OR `GB` OR `RU`)!
+This filter will call the API for any proxies that are either of protocol (`http` OR `socks4`) AND of anonymity (`anonymous` OR `elite`) AND from (`US` OR `GB` OR `RU`)!
 
 ### Example output
 Here is a sample response for the `.getProxy()` method. This is the output you will see when `extended=true`:
 ```js
 {
-  "ip": "209.99.133.56",
+  "ip": "209.99.133.59",
   "port": "12345",
   "anonymity": "anonymous",
   "userAgent": true,
   "country": "US",
   "get": true,
   "post": true,
-  "ipPort": "209.99.133.56:12345",
+  "ipPort": "209.99.133.59:12345",
   "cookies": true,
-  "protocol": "https",
+  "protocol": "http",
+  "https": true,
   "referrer": true
 }
 ```
@@ -223,9 +228,9 @@ curl -d '{"format": "text", "mode": "ipv4"}' -H 'Content-Type: application/json'
 # Standard
 curl -X POST https://api.proxifly.com/get-proxy
 # With options
-curl -d "format=text&protocol=https&quantity=3" -X POST https://api.proxifly.com/get-proxy
+curl -d "format=text&protocol=http&quantity=3" -X POST https://api.proxifly.com/get-proxy
 # With options (alternative)
-curl -d '{"format": "text", "protocol": ["https", "socks4"], "quantity": 3}' -H 'Content-Type: application/json' https://api.proxifly.com/get-proxy
+curl -d '{"format": "text", "protocol": ["http", "socks4"], "quantity": 3}' -H 'Content-Type: application/json' https://api.proxifly.com/get-proxy
 
 ```
 
