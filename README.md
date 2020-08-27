@@ -184,7 +184,7 @@ Here is a sample response for the `.getPublicIp()` method. This is the output yo
 ```js
 {
   "ip": "73.111.121.217",
-  "country": "USA",
+  "country": "US",
   "state": "California",
   "city": "San Francisco",
   "district": "Lower Nob Hill",
