@@ -97,7 +97,7 @@
 
     return new Promise(function(resolve, reject) {
       setTimeout(function () {
-        return reject(ERROR_TIMEOUT);
+        return reject(new Error(ERROR_TIMEOUT));
       }, options.timeout);
       return serverRequest(This, conf, options, function (response) {
         // console.log('---response.error', response.error);
