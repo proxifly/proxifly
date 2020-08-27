@@ -19,6 +19,7 @@
   var ERROR_DEFAULT = 'There was an unknown error';
   var ERROR_NO_PROXY = 'No proxy provided';
   var ERROR_RECENT = 'Proxy was recently verified';
+  var ERROR_TIMEOUT = 'The request timed out';
 
   function Proxifly(options) {
     // options = options || {};
@@ -26,7 +27,6 @@
     this.options.environment = this.options.environment || environment;
     this.options.apiKey = this.options.apiKey || '';
     this.options.debug = typeof this.options.debug !== 'undefined' ? this.options.debug : false;
-    this.options.promises = typeof this.options.promises !== 'undefined' ? this.options.promises : false;
     // this.options.tags = typeof this.options.tags !== 'undefined' ? this.options.tags : undefined;
     if (this.options.debug) {
       console.log('Proxifly options:', this.options);
@@ -58,21 +58,15 @@
       method: 'POST'
     }
 
-    if (This.options.promises) {
-      return new Promise(function(resolve, reject) {
-        return serverRequest(This, conf, options, function (response) {
-          if (response.error) {
-            reject(response.error);
-          } else {
-            resolve(response.response);
-          }
-        })
-      })
-    } else {
+    return new Promise(function(resolve, reject) {
       return serverRequest(This, conf, options, function (response) {
-        return callback ? callback(response.error, response.response) : response;
+        if (response.error) {
+          return reject(response.error);
+        } else {
+          return resolve(response.response);
+        }
       })
-    }
+    })
   }
 
   Proxifly.prototype.getPublicIp = function(options, callback) {
@@ -82,39 +76,39 @@
     options.method = (options.method || 'POST').toUpperCase();
     options.service = (options.service || 'proxifly').toLowerCase();
     options.format = (options.format || 'json').toLowerCase();
-    options.timeout = typeof options.timeout !== 'undefined' ? options.timeout : 0;
+    options.timeout = typeof options.timeout !== 'undefined' ? options.timeout : 60000;
     options.apiKey = This.options.apiKey;
 
     var conf = {
       host: (options.mode === 'ipv6') ? 'api6.ipify.org' : 'api.proxifly.com',
       path: (options.mode === 'ipv6') ? '/' : '/get-public-ip',
       method: (options.mode === 'ipv6') ? 'GET' : 'POST',
-      service: (options.service === 'proxifly') ? 'proxifly' : 'ipify',
+      service: options.service,
     };
     if (conf.service === 'ipify') {
       conf.method = 'GET';
       conf.host = (options.mode === 'ipv6') ? 'api6.ipify.org' : 'api.ipify.org';
       conf.path = (options.format === 'json') ? '/?format=json' : '/';
+    } else if (conf.service === 'ifconfig') {
+      conf.method = 'GET';
+      conf.host = 'ifconfig.co';
+      conf.path = (options.format === 'json') ? '/json' : 'ip';
     }
 
-    if (This.options.promises) {
-      return new Promise(function(resolve, reject) {
-        return serverRequest(This, conf, options, function (response) {
-          // console.log('---response.error', response.error);
-          if (response.error) {
-            reject(response.error);
-          } else {
-            resolve(ipvxFix(options, response));
-          }
-        })
-      })
-    } else {
+    return new Promise(function(resolve, reject) {
+      setTimeout(function () {
+        return reject(ERROR_TIMEOUT);
+      }, options.timeout);
       return serverRequest(This, conf, options, function (response) {
-        var res = (response.error) ? {} : ipvxFix(options, response);
         // console.log('---response.error', response.error);
-        return callback ? callback(response.error, res) : response;
+
+        if (response.error) {
+          return reject(response.error);
+        } else {
+          return resolve(ipvxFix(options, response));
+        }
       })
-    }
+    })
 
   }
 
@@ -124,7 +118,7 @@
       // console.log('response', response);
       // console.log('response.response', response.response);
       res.ip = (options.mode === 'ipv4') ? response.response.ip : response.response;
-      if (response.response.country) {res.country = response.response.country};
+      if (response.response.country_iso || response.response.country) {res.country = response.response.country_iso || response.response.country};
     } else {
       res = response.response;
     }
@@ -145,34 +139,22 @@
       return (Math.abs(item.timestamp - new Date()) / (1000 * 60)) < 5
     })
 
-    if (This.options.promises) {
-      return new Promise(function(resolve, reject) {
-        if (exists) {
-          return reject(new Error(ERROR_RECENT))
-        } else if (!options.proxy) {
-          return reject(new Error(ERROR_NO_PROXY))
-        }
-
-        return serverRequest(This, conf, options, function (response) {
-          if (response.error) {
-            reject(response.error);
-          } else {
-            addProxyToVerifiedList(This, options.proxy);
-            resolve(response.response);
-          }
-        })
-      })
-    } else {
+    return new Promise(function(resolve, reject) {
       if (exists) {
-        return callback(new Error(ERROR_RECENT), {})
+        return reject(new Error(ERROR_RECENT))
       } else if (!options.proxy) {
-        return callback(new Error(ERROR_NO_PROXY), {})
+        return reject(new Error(ERROR_NO_PROXY))
       }
+
       return serverRequest(This, conf, options, function (response) {
-        addProxyToVerifiedList(This, options.proxy);
-        return callback ? callback(response.error, response.response) : response;
+        if (response.error) {
+          return reject(response.error);
+        } else {
+          addProxyToVerifiedList(This, options.proxy);
+          return resolve(response.response);
+        }
       })
-    }
+    })
   }
 
   function addProxyToVerifiedList(This, proxy) {
@@ -236,7 +218,6 @@
           console.log('Node request...', options);
         }
         var https = require('https');
-
 
         var globalRes;
         var full = '';

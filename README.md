@@ -83,13 +83,18 @@ var options = {
   format: 'json', // json | text
   quantity: 1, // 1 - 20
 };
-proxifly.getProxy(options, function (error, response) {
-  console.log('getProxy:', response);
-  console.log('response IP:', response.ipPort);
+
+proxifly.getProxy(options)
+.then(proxy => {
+  console.log('getProxy:', proxy);
   // If you specify a quantity greater than 1, the response will be an array!
   // In this case, you can access by calling response[0].ipPort, response[1].ipPort, etc...
-});
+})
+.catch(e => {
+  console.error(e);
+})
 ```
+
 ### options
 The options for `getProxy(options)` are as follows.
 * protocol `string`, `array` (optional): Filter by the protocol
@@ -153,11 +158,16 @@ var options = {
   mode: 'IPv4', // IPv4 | IPv6
   format: 'json', // json | text
 };
-proxifly.getPublicIp(options, function (error, response) {
+
+proxifly.getPublicIp(options)
+.then(proxy => {
   console.log('getPublicIp:', response);
   console.log('My IP is:', response.ip);
   console.log('My country is:', response.country);
-});
+})
+.catch(e => {
+  console.error(e);
+})
 ```
 ### options
 The options for `getProxy(options)` are as follows.
@@ -183,32 +193,6 @@ Here is a sample response for the `.getPublicIp()` method. This is the output yo
   "longitude": "-122.42311",
   "isp": "Comcast Cable Communications, LLC"
 }
-```
-
-## Extending Capabilities
-### Using Proxifly with promises
-We built `proxifly` to have optional `Promises` support because we know not everyone uses an environment that supports `Promises`. You can **easily** enable this with one additional option.
-```js
-const proxifly = new (require('proxifly'))({
-  promises: true, // enable Promises instead of callbacks
-  // ... your other options here too
-});
-
-proxifly.getProxy({format: 'json'})
-.then(function (response) {
-  console.log('A fresh proxy:', response);
-})
-.catch(function (error) {
-  console.error('Error:', error);
-})
-
-proxifly.getPublicIp({format: 'json'})
-.then(function (response) {
-  console.log('My public IP is:', response);
-})
-.catch(function (error) {
-  console.error('Error:', error);
-})
 ```
 
 For a more in-depth documentation of this library and the Proxifly service, please visit the official Proxifly website.
