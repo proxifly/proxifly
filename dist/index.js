@@ -20,7 +20,7 @@
   var ERROR_NO_PROXY = 'No proxy provided';
   var ERROR_RECENT = 'Proxy was recently verified';
   var ERROR_TIMEOUT = 'The request timed out';
-  var VERSION = '1.0.7';
+  var VERSION = '1.0.8';
 
   function Proxifly(options) {
     // options = options || {};

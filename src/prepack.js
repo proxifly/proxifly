@@ -1,5 +1,5 @@
 const jetpack = require('fs-jetpack');
-const package = require('./package.json');
+const package = require('../package.json');
 
 jetpack.write(
   './dist/index.js',
