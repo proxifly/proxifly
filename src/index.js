@@ -20,6 +20,7 @@
   var ERROR_NO_PROXY = 'No proxy provided';
   var ERROR_RECENT = 'Proxy was recently verified';
   var ERROR_TIMEOUT = 'The request timed out';
+  var SOURCE = 'library';
   var VERSION = '{version}';
 
   function Proxifly(options) {
@@ -169,6 +170,7 @@
       var content = 'application/json';
 
       reqObj._version = VERSION;
+      reqObj._source = SOURCE;
 
       if (This.options.environment === 'browser') {
         var addy = (reqObj.protocol || 'https://') + reqObj.host + reqObj.path;
