@@ -18,6 +18,7 @@
 
   var ERROR_DEFAULT = 'There was an unknown error';
   var ERROR_NO_PROXY = 'No proxy provided';
+  var ERROR_ON_LIST = 'Proxy is already in verification queue';
   var ERROR_RECENT = 'Proxy was recently verified';
   var ERROR_TIMEOUT = 'The request timed out';
   var SOURCE = 'library';
@@ -34,6 +35,7 @@
       console.log('Proxifly options:', this.options);
     }
     this._verifiedProxyList = [];
+    this._verifiedProxyListTimes = [];
   };
 
   var parse = function (req) {
@@ -46,7 +48,7 @@
     return [result, req];
   };
 
-  Proxifly.prototype.getProxy = function(options, callback) {
+  Proxifly.prototype.getProxy = function(options) {
     var This = this;
     options = options || {};
     options.config = options.config || {};
@@ -71,7 +73,7 @@
     })
   }
 
-  Proxifly.prototype.getPublicIp = function(options, callback) {
+  Proxifly.prototype.getPublicIp = function(options) {
     var This = this;
     options = options || {};
     options.mode = (options.mode || 'IPv4').toLowerCase();
@@ -127,50 +129,140 @@
     return res;
   }
 
-  Proxifly.prototype.verifyProxy = function(options, callback) {
+
+  Proxifly.prototype.verifyProxy = function(options) {
     var This = this;
     options = options || {};
     // options.format = (options.format || 'json').toLowerCase();
     options.apiKey = This.options.apiKey;
+    options.batch = options.batch || 20;
+    var MIN = 0.2;
     var conf = {host: 'api.proxifly.com', path: '/verify-proxy', method: 'POST'}
+
+    // Clean list
+    This._verifiedProxyListTimes = This._verifiedProxyListTimes.filter(function(item, index) {
+      // var pass = _wasFromLastNMin(item.timestamp, MIN);
+      // if (pass) {
+      //   console.log('-----PASS', item.proxy, item.timestamp);
+      // } else {
+      //   console.log('-----FAIL', item.proxy, item.timestamp);
+      // }
+      // return pass;
+      return _wasFromLastNMin(item.timestamp, MIN);
+    })
+
     var exists = This._verifiedProxyList.find(function (item) {
       return item && item.proxy === options.proxy;
     })
-
-    This._verifiedProxyList = This._verifiedProxyList.filter(function(item, index) {
-      return (Math.abs(item.timestamp - new Date()) / (1000 * 60)) < 5
+    var recentlyVerified = This._verifiedProxyListTimes.find(function (item) {
+      return item && (item.proxy === options.proxy) && _wasFromLastNMin(item.timestamp, MIN);
     })
+
+    console.log('----result', options.proxy, 'recentlyVerified=', !!recentlyVerified, 'exists=', !!exists,);
+
+
+    // console.log('---here', options.proxy, !!exists);
 
     return new Promise(function(resolve, reject) {
       if (exists) {
+        return reject(new Error(ERROR_ON_LIST))
+      } else if (recentlyVerified) {
         return reject(new Error(ERROR_RECENT))
       } else if (!options.proxy) {
         return reject(new Error(ERROR_NO_PROXY))
       }
+      var size = This._verifiedProxyList.length;
 
-      return serverRequest(This, conf, options, function (response) {
-        if (response.error) {
-          return reject(response.error);
-        } else {
-          addProxyToVerifiedList(This, options.proxy);
-          return resolve(response.response);
-        }
-      })
+      addProxyToVerifiedList(This, options);
+
+      if (size >= options.batch - 1) {
+        setTimeout(function () {
+          This._verifiedProxyList = [];
+        }, 1);
+        console.log('---Sending to server...', This._verifiedProxyList);
+        return serverRequest(This, conf, This._verifiedProxyList, function (response) {
+          // console.log('---response', response.response);
+          if (response.error) {
+            return reject(response.error);
+          } else {
+            // This._verifiedProxyList = [];
+            return resolve(response.response);
+          }
+        })
+      } else {
+        // console.log('----options', options);
+        return resolve('Waiting for batch size to accumulate: ' + size + '/' + options.batch);
+      }
+
     })
   }
 
-  function addProxyToVerifiedList(This, proxy) {
-    This._verifiedProxyList = This._verifiedProxyList.concat({
-      proxy: proxy,
+  function addProxyToVerifiedList(This, payload) {
+    This._verifiedProxyList = This._verifiedProxyList.concat(payload);
+    This._verifiedProxyListTimes = This._verifiedProxyListTimes.concat({
+      proxy: payload.proxy,
       timestamp: new Date(),
     });
   }
 
+  function _wasFromLastNMin(time, min) {
+    return ((Math.abs(time - new Date()) / (1000 * 60)) < min)
+  }
+
+  // Proxifly.prototype.verifyProxy = function(options, callback) {
+  //   var This = this;
+  //   options = options || {};
+  //   // options.format = (options.format || 'json').toLowerCase();
+  //   options.apiKey = This.options.apiKey;
+  //   options.batch = options.batch || 20;
+  //   var conf = {host: 'api.proxifly.com', path: '/verify-proxy', method: 'POST'}
+  //   var exists = This._verifiedProxyList.find(function (item) {
+  //     return item && item.proxy === options.proxy;
+  //   })
+  //
+  //   This._verifiedProxyList = This._verifiedProxyList.filter(function(item, index) {
+  //     // return (Math.abs(item.timestamp - new Date()) / (1000 * 60)) < 5
+  //     return ((Math.abs(item.timestamp - new Date()) / (1000 * 60)) < 5)
+  //   })
+  //
+  //   return new Promise(function(resolve, reject) {
+  //     if (exists) {
+  //       return reject(new Error(ERROR_RECENT))
+  //     } else if (!options.proxy) {
+  //       return reject(new Error(ERROR_NO_PROXY))
+  //     }
+  //     var size = This._verifiedProxyList.length;
+  //
+  //     if (size >= options.batch) {
+  //       addProxyToVerifiedList(This, options.proxy);
+  //
+  //       return serverRequest(This, conf, options, function (response) {
+  //         // console.log('---response', response);
+  //         if (response.error) {
+  //           return reject(response.error);
+  //         } else {
+  //           return resolve(response.response);
+  //         }
+  //       })
+  //     } else {
+  //       return resolve('Waiting for batch size to accumulate: ' + size + '/' + options.batch);
+  //     }
+  //
+  //   })
+  // }
+  //
+  // function addProxyToVerifiedList(This, proxy) {
+  //   This._verifiedProxyList = This._verifiedProxyList.concat({
+  //     proxy: proxy,
+  //     timestamp: new Date(),
+  //   });
+  // }
+
   function serverRequest(This, reqObj, payload, callback) {
       var content = 'application/json';
 
-      reqObj._version = VERSION;
-      reqObj._source = SOURCE;
+      payload._version = VERSION;
+      payload._source = SOURCE;
 
       if (This.options.environment === 'browser') {
         var addy = (reqObj.protocol || 'https://') + reqObj.host + reqObj.path;
@@ -235,10 +327,11 @@
           });
           res.on('end', function() {
             var resData = parse(full.toString())[0];
+            // console.log('--1', res);
             if (res.statusCode >= 200 && res.statusCode < 300) {
               callback({error: null, request: req, response: resData});
             } else {
-              callback({error: resData, request: req});
+              callback({error: resData || res.statusMessage || 'Unknown error.', request: req});
             }
           });
 
