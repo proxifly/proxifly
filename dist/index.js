@@ -22,7 +22,7 @@
   var ERROR_RECENT = 'Proxy was recently verified';
   var ERROR_TIMEOUT = 'The request timed out';
   var SOURCE = 'library';
-  var VERSION = '1.0.10';
+  var VERSION = '1.0.11';
 
   function Proxifly(options) {
     // options = options || {};
@@ -135,33 +135,23 @@
     options = options || {};
     // options.format = (options.format || 'json').toLowerCase();
     options.apiKey = This.options.apiKey;
-    options.batch = options.batch || 20;
-    var MIN = 0.2;
+    options.batchSize = options.batchSize || 20;
+    options.throttleMin = options.throttleMin || 15;
     var conf = {host: 'api.proxifly.com', path: '/verify-proxy', method: 'POST'}
 
     // Clean list
     This._verifiedProxyListTimes = This._verifiedProxyListTimes.filter(function(item, index) {
-      // var pass = _wasFromLastNMin(item.timestamp, MIN);
-      // if (pass) {
-      //   console.log('-----PASS', item.proxy, item.timestamp);
-      // } else {
-      //   console.log('-----FAIL', item.proxy, item.timestamp);
-      // }
-      // return pass;
-      return _wasFromLastNMin(item.timestamp, MIN);
+      return _wasFromLastNMin(item.timestamp, options.throttleMin);
     })
 
     var exists = This._verifiedProxyList.find(function (item) {
       return item && item.proxy === options.proxy;
     })
     var recentlyVerified = This._verifiedProxyListTimes.find(function (item) {
-      return item && (item.proxy === options.proxy) && _wasFromLastNMin(item.timestamp, MIN);
+      return item && (item.proxy === options.proxy) && _wasFromLastNMin(item.timestamp, options.throttleMin);
     })
 
-    console.log('----result', options.proxy, 'recentlyVerified=', !!recentlyVerified, 'exists=', !!exists,);
-
-
-    // console.log('---here', options.proxy, !!exists);
+    // console.log('----result', options.proxy, 'recentlyVerified=', !!recentlyVerified, 'exists=', !!exists,);
 
     return new Promise(function(resolve, reject) {
       if (exists) {
@@ -175,11 +165,11 @@
 
       addProxyToVerifiedList(This, options);
 
-      if (size >= options.batch - 1) {
+      if (size >= options.batchSize - 1) {
         setTimeout(function () {
           This._verifiedProxyList = [];
         }, 1);
-        console.log('---Sending to server...', This._verifiedProxyList);
+        // console.log('---Sending to server...', This._verifiedProxyList);
         return serverRequest(This, conf, This._verifiedProxyList, function (response) {
           // console.log('---response', response.response);
           if (response.error) {
@@ -191,7 +181,7 @@
         })
       } else {
         // console.log('----options', options);
-        return resolve('Waiting for batch size to accumulate: ' + size + '/' + options.batch);
+        return resolve('Waiting for batch size to accumulate: ' + size + '/' + options.batchSize);
       }
 
     })
@@ -208,55 +198,6 @@
   function _wasFromLastNMin(time, min) {
     return ((Math.abs(time - new Date()) / (1000 * 60)) < min)
   }
-
-  // Proxifly.prototype.verifyProxy = function(options, callback) {
-  //   var This = this;
-  //   options = options || {};
-  //   // options.format = (options.format || 'json').toLowerCase();
-  //   options.apiKey = This.options.apiKey;
-  //   options.batch = options.batch || 20;
-  //   var conf = {host: 'api.proxifly.com', path: '/verify-proxy', method: 'POST'}
-  //   var exists = This._verifiedProxyList.find(function (item) {
-  //     return item && item.proxy === options.proxy;
-  //   })
-  //
-  //   This._verifiedProxyList = This._verifiedProxyList.filter(function(item, index) {
-  //     // return (Math.abs(item.timestamp - new Date()) / (1000 * 60)) < 5
-  //     return ((Math.abs(item.timestamp - new Date()) / (1000 * 60)) < 5)
-  //   })
-  //
-  //   return new Promise(function(resolve, reject) {
-  //     if (exists) {
-  //       return reject(new Error(ERROR_RECENT))
-  //     } else if (!options.proxy) {
-  //       return reject(new Error(ERROR_NO_PROXY))
-  //     }
-  //     var size = This._verifiedProxyList.length;
-  //
-  //     if (size >= options.batch) {
-  //       addProxyToVerifiedList(This, options.proxy);
-  //
-  //       return serverRequest(This, conf, options, function (response) {
-  //         // console.log('---response', response);
-  //         if (response.error) {
-  //           return reject(response.error);
-  //         } else {
-  //           return resolve(response.response);
-  //         }
-  //       })
-  //     } else {
-  //       return resolve('Waiting for batch size to accumulate: ' + size + '/' + options.batch);
-  //     }
-  //
-  //   })
-  // }
-  //
-  // function addProxyToVerifiedList(This, proxy) {
-  //   This._verifiedProxyList = This._verifiedProxyList.concat({
-  //     proxy: proxy,
-  //     timestamp: new Date(),
-  //   });
-  // }
 
   function serverRequest(This, reqObj, payload, callback) {
       var content = 'application/json';
