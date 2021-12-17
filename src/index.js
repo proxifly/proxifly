@@ -204,6 +204,7 @@
 
       payload._version = VERSION;
       payload._source = SOURCE;
+      payload._referrer = getLocation();
 
       if (This.options.environment === 'browser') {
         var addy = (reqObj.protocol || 'https://') + reqObj.host + reqObj.path;
@@ -285,6 +286,14 @@
         req.write(payload);
         req.end();
       }
+  }
+
+  function getLocation() {
+    try {
+      return window.location.href;
+    } catch (e) {
+      return null;
+    }
   }
 
   function stringifyData(data) {

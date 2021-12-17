@@ -1,6 +1,6 @@
 {
   "name": "proxifly",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Proxifly is a service to get free HTTPS proxies and check your public IP",
   "main": "./dist/index.js",
   "scripts": {
