@@ -22,7 +22,7 @@
   var ERROR_RECENT = 'Proxy was recently verified';
   var ERROR_TIMEOUT = 'The request timed out';
   var SOURCE = 'library';
-  var VERSION = '1.0.12';
+  var VERSION = '1.0.13';
 
   function Proxifly(options) {
     // options = options || {};

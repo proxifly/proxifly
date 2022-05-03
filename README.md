@@ -26,7 +26,7 @@
 </p>
 
 ## Proxifly Works in Node AND browser environments
-Yes, this module works in both Node and browser environments, including compatability with [Webpack](https://www.npmjs.com/package/webpack) and [Browserify](https://www.npmjs.com/package/browserify)!
+Yes, this module works in both Node and browser environments, including compatibility with [Webpack](https://www.npmjs.com/package/webpack) and [Browserify](https://www.npmjs.com/package/browserify)!
 
 ## Features
 * Getting proxy lists
@@ -36,7 +36,7 @@ Yes, this module works in both Node and browser environments, including compatab
 * Check your public IP
   * Blazingly fast public IP check
   * Use this to confirm you are connected through the proxy!
-  * Use option `extended=true` to see country, city, zipcode, and latitude/longitude for the IP as well.
+  * Use option `extended=true` to see country, city, zip code, and latitude/longitude for the IP as well.
 
 ### Getting an API key
 You can use so much of `proxifly` for free, but if you want to do some advanced stuff, you'll need an API key. You can get one by signing up for an account at [https://proxifly.com/signup](https://proxifly.com/signup).
