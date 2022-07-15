@@ -1,13 +1,13 @@
 {
   "name": "proxifly",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Proxifly is a service to get free HTTPS proxies and check your public IP",
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:get-proxy": "node ./test/get-proxy.js",
     "test:verify-proxy": "node ./test/verify-proxy.js",
-    "prepack": "node ./src/prepack.js"
+    "prepare": "node -e 'require(`prepare-package`)'"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -36,5 +36,8 @@
   "bugs": {
     "url": "https://github.com/proxifly/proxifly/issues"
   },
-  "homepage": "https://proxifly.com"
+  "homepage": "https://proxifly.com",
+  "devDependencies": {
+    "prepare-package": "^0.0.12"
+  }
 }
