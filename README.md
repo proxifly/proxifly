@@ -38,7 +38,7 @@ Yes, this module works in both Node and browser environments, including compatib
   * Use option `extended=true` to see country, city, zip code, and latitude/longitude for the IP as well.
 
 ### Getting an API key
-You can use so much of `proxifly` for free, but if you want to do some advanced stuff, you'll need an API key. You can get one by signing up for an account at [https://proxifly.com/signup](https://proxifly.com/signup).
+You can use so much of `proxifly` for free, but if you want to do some advanced stuff, you'll need an API key. You can get one by signing up for an account at [https://proxifly.com/authentication/signup](https://proxifly.com/authentication/signup).
 
 ## Install Proxifly
 ### Install via npm
