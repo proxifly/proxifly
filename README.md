@@ -50,7 +50,8 @@ If you plan to use `proxifly` in a browser environment, you will probably need t
 
 ```js
 const proxifly = new (require('proxifly'))({
-  apiKey: 'api_test_key' // Not required, but having one removes limits (get your key at https://proxifly.com).
+  // Not required, but having one removes limits (get your key at https://proxifly.com).
+  apiKey: 'api_test_key'
 });
 ```
 
@@ -60,7 +61,8 @@ Install with CDN if you plan to use Proxifly only in a browser environment.
 <script src="https://cdn.jsdelivr.net/npm/proxifly@latest/dist/index.min.js"></script>
 <script type="text/javascript">
   var proxifly = new Proxifly({
-    apiKey: 'api_test_Key' // Not required, but having one removes limits (get your key at https://proxifly.com).
+    // Not required, but having one removes limits (get your key at https://proxifly.com).
+    apiKey: 'api_test_Key'
   });
 </script>
 ```
