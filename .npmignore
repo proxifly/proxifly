@@ -2,4 +2,3 @@ CNAME
 gulpfile.js
 .codeclimate.yml
 /src/
-prepack.js
