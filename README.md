@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/github/package-json/v/proxifly/proxifly.svg">
   <br>
-  <img src="https://img.shields.io/librariesio/release/npm/optiic.svg">
+  <img src="https://img.shields.io/librariesio/release/npm/proxifly.svg">
   <img src="https://img.shields.io/bundlephobia/min/proxifly.svg">
   <img src="https://img.shields.io/codeclimate/maintainability-percentage/proxifly/proxifly.svg">
   <img src="https://img.shields.io/npm/dm/proxifly.svg">
