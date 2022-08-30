@@ -4,9 +4,9 @@
   "description": "Proxifly is a service to get free HTTPS proxies and check your public IP",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test:get-proxy": "node ./test/get-proxy.js",
-    "test:verify-proxy": "node ./test/verify-proxy.js",
+    "test": "npm run prepare && ./node_modules/mocha/bin/mocha test/ --recursive --timeout=10000",
+    "test:get-proxy": "npm run prepare && node ./test/get-proxy.js",
+    "test:verify-proxy": "npm run prepare && node ./test/verify-proxy.js",
     "prepare": "node -e 'require(`prepare-package`)'"
   },
   "engines": {
@@ -38,6 +38,7 @@
   },
   "homepage": "https://proxifly.com",
   "devDependencies": {
-    "prepare-package": "^0.0.12"
+    "mocha": "^8.4.0",
+    "prepare-package": "^0.0.13"
   }
 }
