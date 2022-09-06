@@ -7,7 +7,7 @@
     "test": "npm run prepare && ./node_modules/mocha/bin/mocha test/ --recursive --timeout=10000",
     "test:get-proxy": "npm run prepare && node ./test/get-proxy.js",
     "test:verify-proxy": "npm run prepare && node ./test/verify-proxy.js",
-    "prepare": "node -e 'require(`prepare-package`)'"
+    "prepare": "node -e 'require(`prepare-package`)()'"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -39,6 +39,6 @@
   "homepage": "https://proxifly.com",
   "devDependencies": {
     "mocha": "^8.4.0",
-    "prepare-package": "^0.0.13"
+    "prepare-package": "^0.0.16"
   }
 }
