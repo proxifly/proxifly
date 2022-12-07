@@ -54,9 +54,9 @@
     options.config = options.config || {};
     options.format = (options.format || 'json').toLowerCase();
     options.apiKey = This.options.apiKey;
-    // payload.endpoint = payload.endpoint || 'api.proxifly.com';
+    // payload.endpoint = payload.endpoint || 'api.proxifly.dev';
     var conf = {
-      host: options.config.host || 'api.proxifly.com',
+      host: options.config.host || 'api.proxifly.dev',
       path: options.config.path || '/get-proxy',
       protocol: options.config.protocol || 'https://',
       method: 'POST'
@@ -84,7 +84,7 @@
     options.apiKey = This.options.apiKey;
 
     var conf = {
-      host: (options.mode === 'ipv6') ? 'api6.ipify.org' : 'api.proxifly.com',
+      host: (options.mode === 'ipv6') ? 'api6.ipify.org' : 'api.proxifly.dev',
       path: (options.mode === 'ipv6') ? '/' : '/get-public-ip',
       method: (options.mode === 'ipv6') ? 'GET' : 'POST',
       service: options.service,
@@ -137,7 +137,7 @@
     options.apiKey = This.options.apiKey;
     options.batchSize = options.batchSize || 20;
     options.throttleMin = options.throttleMin || 15;
-    var conf = {host: 'api.proxifly.com', path: '/verify-proxy', method: 'POST'}
+    var conf = {host: 'api.proxifly.dev', path: '/verify-proxy', method: 'POST'}
 
     // Clean list
     This._verifiedProxyListTimes = This._verifiedProxyListTimes.filter(function(item, index) {

@@ -12,16 +12,16 @@
   <img src="https://img.shields.io/codeclimate/maintainability-percentage/proxifly/proxifly.svg">
   <img src="https://img.shields.io/npm/dm/proxifly.svg">
   <img src="https://img.shields.io/node/v/proxifly.svg">
-  <img src="https://img.shields.io/website/https/proxifly.com.svg">
+  <img src="https://img.shields.io/website/https/proxifly.dev.svg">
   <img src="https://img.shields.io/github/license/proxifly/proxifly.svg">
   <img src="https://img.shields.io/github/contributors/proxifly/proxifly.svg">
   <img src="https://img.shields.io/github/last-commit/proxifly/proxifly.svg">
   <br>
   <br>
-  <a href="https://proxifly.com">Site</a> | <a href="https://www.npmjs.com/package/proxifly">NPM Module</a> | <a href="https://github.com/proxifly/proxifly">GitHub Repo</a>
+  <a href="https://proxifly.dev">Site</a> | <a href="https://www.npmjs.com/package/proxifly">NPM Module</a> | <a href="https://github.com/proxifly/proxifly">GitHub Repo</a>
   <br>
   <br>
-  <strong>proxifly</strong> is the official npm module of <a href="https://proxifly.com">Proxifly</a>, a free service to get SOCKS, HTTP, & HTTPS proxies as well as to check your public IP!
+  <strong>proxifly</strong> is the official npm module of <a href="https://proxifly.dev">Proxifly</a>, a free service to get SOCKS, HTTP, & HTTPS proxies as well as to check your public IP!
 </p>
 
 ## Proxifly Works in Node AND browser environments
@@ -38,7 +38,7 @@ Yes, this module works in both Node and browser environments, including compatib
   * Use option `extended=true` to see country, city, zip code, and latitude/longitude for the IP as well.
 
 ### Getting an API key
-You can use so much of `proxifly` for free, but if you want to do some advanced stuff, you'll need an API key. You can get one by [signing up for a Proxifly account](https://proxifly.com/authentication/signup).
+You can use so much of `proxifly` for free, but if you want to do some advanced stuff, you'll need an API key. You can get one by [signing up for a Proxifly account](https://proxifly.dev/authentication/signup).
 
 ## Install Proxifly
 ### Install via npm
@@ -50,7 +50,7 @@ If you plan to use `proxifly` in a browser environment, you will probably need t
 
 ```js
 const proxifly = new (require('proxifly'))({
-  // Not required, but having one removes limits (get your key at https://proxifly.com).
+  // Not required, but having one removes limits (get your key at https://proxifly.dev).
   apiKey: 'api_test_key'
 });
 ```
@@ -61,8 +61,8 @@ Install with CDN if you plan to use Proxifly only in a browser environment.
 <script src="https://cdn.jsdelivr.net/npm/proxifly@latest/dist/index.min.js"></script>
 <script type="text/javascript">
   var proxifly = new Proxifly({
-    // Not required, but having one removes limits (get your key at https://proxifly.com).
-    apiKey: 'api_test_Key'
+    // Not required, but having one removes limits (get your key at https://proxifly.dev).
+    apiKey: 'api_test_key'
   });
 </script>
 ```
@@ -203,24 +203,24 @@ For a more in-depth documentation of this library and the Proxifly service, plea
 ```shell
 # Get public IP
 # Standard
-curl -X POST https://api.proxifly.com/get-public-ip
+curl -X POST https://api.proxifly.dev/get-public-ip
 # With options
-curl -d "format=text&mode=ipv4" -X POST https://api.proxifly.com/get-public-ip
+curl -d "format=text&mode=ipv4" -X POST https://api.proxifly.dev/get-public-ip
 # With options (alternative)
-curl -d '{"format": "text", "mode": "ipv4"}' -H 'Content-Type: application/json' https://api.proxifly.com/get-public-ip
+curl -d '{"format": "text", "mode": "ipv4"}' -H 'Content-Type: application/json' https://api.proxifly.dev/get-public-ip
 
 # Get a proxy
 # Standard
-curl -X POST https://api.proxifly.com/get-proxy
+curl -X POST https://api.proxifly.dev/get-proxy
 # With options
-curl -d "format=text&protocol=http&quantity=3" -X POST https://api.proxifly.com/get-proxy
+curl -d "format=text&protocol=http&quantity=3" -X POST https://api.proxifly.dev/get-proxy
 # With options (alternative)
-curl -d '{"format": "text", "protocol": ["http", "socks4"], "quantity": 3}' -H 'Content-Type: application/json' https://api.proxifly.com/get-proxy
+curl -d '{"format": "text", "protocol": ["http", "socks4"], "quantity": 3}' -H 'Content-Type: application/json' https://api.proxifly.dev/get-proxy
 
 ```
 
 ## What Can Proxifly do?
-[Proxifly is a free proxy api](https://proxifly.com) that helps you get free proxy lists and check your public IP.
+[Proxifly is a free proxy api](https://proxifly.dev) that helps you get free proxy lists and check your public IP.
 
 ## Final Words
 If you are still having difficulty, we would love for you to post
