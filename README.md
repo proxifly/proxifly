@@ -38,7 +38,7 @@ Yes, this module works in both Node and browser environments, including compatib
   * Use option `extended=true` to see country, city, zip code, and latitude/longitude for the IP as well.
 
 ### Getting an API key
-You can use so much of `proxifly` for free, but if you want to do some advanced stuff, you'll need an API key. You can get one by [signing up for a Proxifly account](https://proxifly.dev/authentication/signup).
+You can use so much of `proxifly` for free, but if you want to do some advanced stuff, you'll need an API key. You can get one by [signing up for a Proxifly account](https://proxifly.dev/signup).
 
 ## Install Proxifly
 ### Install via npm
@@ -109,16 +109,16 @@ The options for `getProxy(options)` are as follows.
   * Default: `null` (no filter, any country)
 * https `boolean` (optional): Filter by https/SSL.
   * Values: `true`, `false`
-  * Default: `null` (no filter, any level of https)  
+  * Default: `null` (no filter, any level of https)
 * speed `number` (optional): Filter by speed, value is in _milliseconds_ taken to connect.
   * Values: `0` - `60000`
   * Default: `null` (no filter, any speed)
   * Note: Specifying a very low number (less than ~400) will return significantly fewer results
 * format `string` (optional): The response type.
-  * Values: `json`,  `text`  
+  * Values: `json`,  `text`
   * Default: `json`
 * quantity `number` (optional): The number of proxies to be returned. Any number greater than `1` will be returned in an `array`.
-  * Values: `1` - `20`  
+  * Values: `1` - `20`
   * Default: `1`
   * Note: Without an API key, you cannot return more than `1` result.
 
@@ -137,18 +137,14 @@ This filter will call the API for any proxies that are either of protocol (`http
 Here is a sample response for the `.getProxy()` method. This is the output you will see when `extended=true`:
 ```js
 {
-  "ip": "209.99.133.59",
-  "port": "12345",
-  "anonymity": "anonymous",
-  "userAgent": true,
-  "country": "US",
-  "get": true,
-  "post": true,
-  "ipPort": "209.99.133.59:12345",
-  "cookies": true,
-  "protocol": "http",
-  "https": true,
-  "referrer": true
+  proxy: 'socks4://103.99.110.222:5678',
+  protocol: 'socks4',
+  ip: '103.99.110.222',
+  port: 5678,
+  https: false,
+  anonymity: 'transparent',
+  score: 1,
+  geolocation: { country: 'IN', city: 'Unknown' }
 }
 ```
 
@@ -173,10 +169,10 @@ proxifly.getPublicIp(options)
 ### options
 The options for `getProxy(options)` are as follows.
 * mode `string` (optional): IPv4 IP or IPv6 IP?
-  * Values: `IPv4`,  `IPv6`  
+  * Values: `IPv4`,  `IPv6`
   * Default: `IPv4`
 * format `string` (optional): The response type.
-  * Values: `json`,  `text`  
+  * Values: `json`,  `text`
   * Default: `json`
 
 
@@ -184,15 +180,13 @@ The options for `getProxy(options)` are as follows.
 Here is a sample response for the `.getPublicIp()` method. This is the output you will see when `extended=true`:
 ```js
 {
-  "ip": "73.111.121.217",
-  "country": "US",
-  "state": "California",
-  "city": "San Francisco",
-  "district": "Lower Nob Hill",
-  "zipcode": "94109",
-  "latitude": "37.88619",
-  "longitude": "-122.42311",
-  "isp": "Comcast Cable Communications, LLC"
+  ip: '104.173.192.180',
+  geolocation: {
+    country: 'US',
+    city: 'Los Angeles',
+    latitude: 34.0544,
+    longitude: -118.2441
+  }
 }
 ```
 
