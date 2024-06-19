@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://cdn.itwcreativeworks.com/assets/proxifly/images/logo/proxifly-brandmark-black-x.svg">
+  <a href="https://proxifly.dev">
     <img src="https://cdn.itwcreativeworks.com/assets/proxifly/images/logo/proxifly-brandmark-black-x.svg" width="100px">
   </a>
 </p>
@@ -24,10 +24,10 @@
   <strong>proxifly</strong> is the official npm module of <a href="https://proxifly.dev">Proxifly</a>, a free service to get SOCKS, HTTP, & HTTPS proxies as well as to check your public IP!
 </p>
 
-## Proxifly Works in Node AND browser environments
+## 🌐 Proxifly Works in Node AND browser environments
 Yes, this module works in both Node and browser environments, including compatibility with [Webpack](https://www.npmjs.com/package/webpack) and [Browserify](https://www.npmjs.com/package/browserify)!
 
-## Features
+## 🦄 Features
 * Getting proxy lists
   * An API to get HTTP, HTTPS, and SOCKS proxies
   * Easily filter by country, speed, and anonymity level
@@ -37,11 +37,11 @@ Yes, this module works in both Node and browser environments, including compatib
   * Use this to confirm you are connected through the proxy!
   * Use option `extended=true` to see country, city, zip code, and latitude/longitude for the IP as well.
 
-### Getting an API key
+### 🔑 Getting an API key
 You can use so much of `proxifly` for free, but if you want to do some advanced stuff, you'll need an API key. You can get one by [signing up for a Proxifly account](https://proxifly.dev/signup).
 
-## Install Proxifly
-### Install via npm
+## 📦 Install Proxifly
+### Option 1: Install via npm
 Install with npm if you plan to use `proxifly` in a Node project or in the browser.
 ```shell
 npm install proxifly
@@ -55,7 +55,7 @@ const proxifly = new (require('proxifly'))({
 });
 ```
 
-### Install via CDN
+### Option 2: Install via CDN
 Install with CDN if you plan to use Proxifly only in a browser environment.
 ```html
 <script src="https://cdn.jsdelivr.net/npm/proxifly@latest/dist/index.min.js"></script>
@@ -67,10 +67,10 @@ Install with CDN if you plan to use Proxifly only in a browser environment.
 </script>
 ```
 
-### Use without installation
+### Option 3: Use without installation
 You can use `proxifly` in a variety of ways that require no installation, such as `curl` in terminal/shell. See the **Use without installation** section below.
 
-## Using Proxifly
+## ⚡️ Using Proxifly
 After you have followed the install step, you can start using `proxifly` to get proxy lists and check your public IP!
 ### getProxy()
 Retrieves a fully filterable list of proxies in either `json` or plain `text`.
@@ -192,7 +192,7 @@ Here is a sample response for the `.getPublicIp()` method. This is the output yo
 
 For a more in-depth documentation of this library and the Proxifly service, please visit the official Proxifly website.
 
-## Use without installation
+## 🔧 Use without installation
 ### Use Proxifly with `curl`
 ```shell
 # Get public IP
@@ -213,14 +213,14 @@ curl -d '{"format": "text", "protocol": ["http", "socks4"], "quantity": 3}' -H '
 
 ```
 
-## What Can Proxifly do?
+## 📝 What Can Proxifly do?
 [Proxifly is a free proxy api](https://proxifly.dev) that helps you get free proxy lists and check your public IP.
 
-## Final Words
+## 🗨️ Final Words
 If you are still having difficulty, we would love for you to post
 a question to [the Proxifly issues page](https://github.com/proxifly/proxifly/issues). It is much easier to answer questions that include your code and relevant files! So if you can provide them, we'd be extremely grateful (and more likely to help you find the answer!)
 
-## Projects Using this Library
+## 📚 Projects Using this Library
 [Somiibo](https://somiibo.com/): A Social Media Bot with an open-source module library. <br>
 [JekyllUp](https://jekyllup.com/): A website devoted to sharing the best Jekyll themes. <br>
 [Slapform](https://slapform.com/): A backend processor for your HTML forms on static sites. <br>

@@ -1,16 +1,17 @@
 {
   "name": "proxifly",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Proxifly is a service to get free HTTPS proxies and check your public IP",
   "main": "./dist/index.js",
   "scripts": {
     "test": "npm run prepare && ./node_modules/mocha/bin/mocha test/ --recursive --timeout=10000",
     "test:get-proxy": "npm run prepare && node ./test/get-proxy.js",
     "test:verify-proxy": "npm run prepare && node ./test/verify-proxy.js",
-    "prepare": "node -e 'require(`prepare-package`)()'"
+    "prepare": "node -e \"require('prepare-package')()\"",
+    "prepare:watch": "nodemon -w ./src -e '*' --exec 'npm run prepare'"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=12"
   },
   "repository": {
     "type": "git",
@@ -37,9 +38,17 @@
     "url": "https://github.com/proxifly/proxifly/issues"
   },
   "homepage": "https://proxifly.dev",
+  "preparePackage": {
+    "input": "./src",
+    "output": "./dist",
+    "replace": {}
+  },
+  "dependencies": {
+    "itwcw-package-analytics": "^1.0.4"
+  },
   "devDependencies": {
     "mocha": "^8.4.0",
-    "prepare-package": "^0.0.16",
-    "wonderful-fetch": "^1.0.0"
+    "prepare-package": "^1.1.12",
+    "wonderful-fetch": "^1.1.12"
   }
 }
