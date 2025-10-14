@@ -22,7 +22,7 @@
   var ERROR_RECENT = 'Proxy was recently verified';
   var ERROR_TIMEOUT = 'The request timed out';
   var SOURCE = 'library';
-  var VERSION = '2.0.2';
+  var VERSION = '2.0.3';
 
   function Proxifly(options) {
     // options = options || {};
@@ -57,7 +57,7 @@
     // payload.endpoint = payload.endpoint || 'api.proxifly.dev';
     var conf = {
       host: options.config.host || 'api.proxifly.dev',
-      path: options.config.path || '/get-proxy',
+      path: options.config.path || '/proxy',
       protocol: options.config.protocol || 'https://',
       method: 'POST'
     }
@@ -224,7 +224,7 @@
 
       if (This.options.environment === 'browser') {
         var addy = (reqObj.protocol || 'https://') + reqObj.host + reqObj.path;
-        // var addy = 'http://localhost:5000/get-proxy';
+        // var addy = 'http://localhost:5000/proxy';
         if (This.options.debug) {
           console.log('Browser request...', addy);
         }

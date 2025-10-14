@@ -1,11 +1,11 @@
 {
   "name": "proxifly",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Proxifly is a service to get free HTTPS proxies and check your public IP",
   "main": "./dist/index.js",
   "scripts": {
     "test": "npm run prepare && ./node_modules/mocha/bin/mocha test/ --recursive --timeout=10000",
-    "test:get-proxy": "npm run prepare && node ./test/get-proxy.js",
+    "test:proxy": "npm run prepare && node ./test/proxy.js",
     "test:verify-proxy": "npm run prepare && node ./test/verify-proxy.js",
     "prepare": "node -e \"require('prepare-package')()\"",
     "prepare:watch": "nodemon -w ./src -e '*' --exec 'npm run prepare'"

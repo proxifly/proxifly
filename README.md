@@ -197,19 +197,19 @@ For a more in-depth documentation of this library and the Proxifly service, plea
 ```shell
 # Get public IP
 # Standard
-curl -X POST https://api.proxifly.dev/get-public-ip
+curl -X POST https://api.proxifly.dev/ip
 # With options
-curl -d "format=text&mode=ipv4" -X POST https://api.proxifly.dev/get-public-ip
+curl -d "format=text&mode=ipv4" -X POST https://api.proxifly.dev/ip
 # With options (alternative)
-curl -d '{"format": "text", "mode": "ipv4"}' -H 'Content-Type: application/json' https://api.proxifly.dev/get-public-ip
+curl -d '{"format": "text", "mode": "ipv4"}' -H 'Content-Type: application/json' https://api.proxifly.dev/ip
 
 # Get a proxy
 # Standard
-curl -X POST https://api.proxifly.dev/get-proxy
+curl -X POST https://api.proxifly.dev/proxy
 # With options
-curl -d "format=text&protocol=http&quantity=3" -X POST https://api.proxifly.dev/get-proxy
+curl -d "format=text&protocol=http&quantity=3" -X POST https://api.proxifly.dev/proxy
 # With options (alternative)
-curl -d '{"format": "text", "protocol": ["http", "socks4"], "quantity": 3}' -H 'Content-Type: application/json' https://api.proxifly.dev/get-proxy
+curl -d '{"format": "text", "protocol": ["http", "socks4"], "quantity": 3}' -H 'Content-Type: application/json' https://api.proxifly.dev/proxy
 
 ```
 
