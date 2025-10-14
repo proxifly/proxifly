@@ -1,6 +1,6 @@
 {
   "name": "proxifly",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Proxifly is a service to get free HTTPS proxies and check your public IP",
   "main": "./dist/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "test:proxy": "npm run prepare && node ./test/proxy.js",
     "test:verify-proxy": "npm run prepare && node ./test/verify-proxy.js",
     "prepare": "node -e \"require('prepare-package')()\"",
-    "prepare:watch": "nodemon -w ./src -e '*' --exec 'npm run prepare'"
+    "prepare:watch": "node -e \"require('prepare-package/watch')()\""
   },
   "engines": {
     "node": ">=12"
@@ -44,11 +44,11 @@
     "replace": {}
   },
   "dependencies": {
-    "itwcw-package-analytics": "^1.0.4"
+    "itwcw-package-analytics": "^1.0.6"
   },
   "devDependencies": {
     "mocha": "^8.4.0",
-    "prepare-package": "^1.1.12",
-    "wonderful-fetch": "^1.1.12"
+    "prepare-package": "^1.2.5",
+    "wonderful-fetch": "^1.3.4"
   }
 }
