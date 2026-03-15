@@ -15,6 +15,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `Security` in case of vulnerabilities.
 
 ---
+## [3.0.1] - 2026-03-15
+### Fixed
+- CJS `require('proxifly')` now works directly without `.default`
+
+### Changed
+- Added CommonJS import example to README
+- Bumped wonderful-fetch to 2.0.4, prepare-package to 2.0.7
+- Expanded test suite from 3 to 13 tests
+
+---
 ## [3.0.0] - 2026-03-15
 ### BREAKING
 - Replaced UMD module format with ESM/CJS/IIFE via prepare-package v2
