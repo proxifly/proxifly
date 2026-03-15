@@ -15,6 +15,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `Security` in case of vulnerabilities.
 
 ---
+## [3.0.2] - 2026-03-15
+### Changed
+- Separated import and usage into distinct code blocks in README for clarity
+
+---
 ## [3.0.1] - 2026-03-15
 ### Fixed
 - CJS `require('proxifly')` now works directly without `.default`
