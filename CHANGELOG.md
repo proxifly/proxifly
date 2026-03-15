@@ -15,6 +15,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `Security` in case of vulnerabilities.
 
 ---
+## [3.0.0] - 2026-03-15
+### BREAKING
+- Replaced UMD module format with ESM/CJS/IIFE via prepare-package v2
+- Simplified `getProxy()` and `getPublicIp()` method signatures (removed format/config nesting)
+- Switched API host to `api.proxifly.dev` with GET requests and Bearer token auth
+- Removed deprecated `verifyProxy` and `isProxyOrVPN` methods
+
+### Changed
+- Replaced manual `https`/`XMLHttpRequest` with `wonderful-fetch`
+- Added configurable `url` option to constructor
+- Updated all dependencies to latest versions
+- Bumped minimum Node version to 16
+- Modernized README with updated API examples
+
+### Removed
+- Removed `.npmignore` and `CNAME` in favor of `files` field in `package.json`
+
+---
 ## [1.0.0] - 2024-06-19
 ### Added
 - Initial release of the project 🚀

@@ -1,6 +1,12 @@
-const package = require('../package.json');
+const pkg = require('../package.json');
 const assert = require('assert');
-const fetch = require('wonderful-fetch');
+const path = require('path');
+const fs = require('fs');
+
+// Read API key from backend .env
+const envPath = path.resolve(__dirname, '../../proxifly-backend/functions/.env');
+const envContent = fs.readFileSync(envPath, 'utf8');
+const apiKey = envContent.match(/BACKEND_MANAGER_KEY="(.+?)"/)?.[1] || '';
 
 beforeEach(async () => {
 });
@@ -16,34 +22,28 @@ after(async () => {
  *  Test Cases
  * ============
  */
-describe(`${package.name}`, () => {
-  const proxifly = new (require('../dist/index.js'))({
-    apiKey: 'api_test_key',
-  })
+describe(`${pkg.name}`, () => {
+  const Proxifly = require('../dist/index.js').default;
+  const proxifly = new Proxifly({
+    apiKey: apiKey,
+  });
 
   // Get Proxy
   describe('.getProxy()', () => {
     it('gets a proxy', () => {
       return proxifly.getProxy()
         .then((json) => {
-          console.log('Response 1:', json);
-          // Should be an object
+          console.log('Response:', json);
           assert.equal(typeof json, 'object');
-        })
-        .catch(e => {
-          console.error(e);
+          assert.equal(typeof json.proxy, 'string');
         })
     });
 
     it('gets multiple proxies', () => {
-      return proxifly.getProxy({quantity: 5, protocol: 'socks4'})
+      return proxifly.getProxy({ quantity: 5, protocol: 'socks4' })
         .then((json) => {
-          console.log('Response 2:', json);
-          // Should be an array
+          console.log('Response:', json);
           assert.equal(Array.isArray(json), true);
-        })
-        .catch(e => {
-          console.error(e);
         })
     });
   });
@@ -53,13 +53,9 @@ describe(`${package.name}`, () => {
     it('displays your public IP', () => {
       return proxifly.getPublicIp()
         .then((json) => {
-          console.log('Response 1:', json);
-          // Should be an object
+          console.log('Response:', json);
+          assert.equal(typeof json, 'object');
           assert.equal(typeof json.ip, 'string');
-          assert.equal(typeof json.geolocation.country, 'string');
-        })
-        .catch(e => {
-          console.error(e);
         })
     });
   });
