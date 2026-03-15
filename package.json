@@ -1,6 +1,6 @@
 {
   "name": "proxifly",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Proxifly is a service to get free HTTPS proxies and check your public IP",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -67,10 +67,10 @@
   "homepage": "https://proxifly.dev",
   "dependencies": {
     "itwcw-package-analytics": "^1.0.8",
-    "wonderful-fetch": "^2.0.2"
+    "wonderful-fetch": "^2.0.4"
   },
   "devDependencies": {
     "mocha": "^11.7.5",
-    "prepare-package": "^2.0.4"
+    "prepare-package": "^2.0.7"
   }
 }

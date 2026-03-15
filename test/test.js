@@ -9,7 +9,7 @@ const envContent = fs.readFileSync(envPath, 'utf8');
 const apiKey = envContent.match(/BACKEND_MANAGER_KEY="(.+?)"/)?.[1] || '';
 
 describe(`${pkg.name} v${pkg.version}`, () => {
-  const Proxifly = require('../dist/index.js').default;
+  const Proxifly = require('../dist/index.js');
 
   // ── Constructor ──────────────────────────────────────────────────────
   describe('constructor', () => {

@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Bumped minimum Node version to 16
 - Modernized README with updated API examples
 - Expanded test suite from 3 to 13 tests (constructor, static, error handling, multiple instances)
+- CJS `require('proxifly')` now works directly without `.default` (prepare-package footer)
 
 ### Removed
 - Removed `.npmignore` and `CNAME` in favor of `files` field in `package.json`

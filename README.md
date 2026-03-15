@@ -27,7 +27,11 @@ npm install proxifly
 ```
 
 ```js
+// ESM
 import Proxifly from 'proxifly';
+
+// CommonJS
+const Proxifly = require('proxifly');
 
 const proxifly = new Proxifly({
   apiKey: 'your-api-key', // Optional, but removes rate limits (get yours at https://proxifly.dev)
