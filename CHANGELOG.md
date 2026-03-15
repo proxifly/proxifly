@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Updated all dependencies to latest versions
 - Bumped minimum Node version to 16
 - Modernized README with updated API examples
+- Expanded test suite from 3 to 13 tests (constructor, static, error handling, multiple instances)
 
 ### Removed
 - Removed `.npmignore` and `CNAME` in favor of `files` field in `package.json`
