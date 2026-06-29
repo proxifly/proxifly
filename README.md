@@ -1,165 +1,39 @@
 <p align="center">
   <a href="https://proxifly.dev">
-    <img src="https://cdn.itwcreativeworks.com/assets/proxifly/images/logo/proxifly-brandmark-black-x.svg" width="100px">
+    <img src="https://cdn.itwcreativeworks.com/assets/proxifly/images/logo/brandmark/black-x.svg" width="100px">
   </a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/package-json/v/proxifly/proxifly.svg">
-  <img src="https://img.shields.io/bundlephobia/min/proxifly.svg">
-  <img src="https://img.shields.io/npm/dm/proxifly.svg">
-  <img src="https://img.shields.io/node/v/proxifly.svg">
-  <img src="https://img.shields.io/github/license/proxifly/proxifly.svg">
+  <img src="https://img.shields.io/website/https/proxifly.dev.svg">
+  <img src="https://img.shields.io/github/stars/proxifly/proxifly?style=social">
   <br>
   <br>
-  <a href="https://proxifly.dev">Site</a> | <a href="https://www.npmjs.com/package/proxifly">NPM Module</a> | <a href="https://github.com/proxifly/proxifly">GitHub Repo</a>
-  <br>
-  <br>
-  <strong>Proxifly</strong> is a free service to get SOCKS, HTTP, & HTTPS proxies as well as check your public IP. Works in both Node and browser environments.
+  <strong>Proxifly</strong> is a free software that Free proxy API to get HTTPS proxies, SOCKS5 proxies, and more. Our rotating REST proxy API provides tested, working proxies from 100+ countries. Never be blocked again!
 </p>
 
-## Quick Start
+# Proxifly
 
-### NPM
+## 💻 Installation
 
-```
-npm install proxifly
-```
+### Direct download
 
-```js
-// ESM
-import Proxifly from 'proxifly';
+[![Windows](https://img.shields.io/badge/-Windows_x64-blue.svg?style=for-the-badge&logo=windows)](https://proxifly.dev?download=windows)
+[![MacOS](https://img.shields.io/badge/-MacOS-lightblue.svg?style=for-the-badge&logo=apple)](https://proxifly.dev?download=macos)
+[![Linux](https://img.shields.io/badge/-Linux/BSD-red.svg?style=for-the-badge&logo=linux)](https://proxifly.dev?download=linux)
+[![All versions](https://img.shields.io/badge/-All_Versions-lightgrey.svg?style=for-the-badge)](https://proxifly.dev)
 
-// CommonJS
-const Proxifly = require('proxifly');
-```
+### Command line
 
-```js
-const proxifly = new Proxifly({
-  apiKey: 'your-api-key', // Optional, but removes rate limits (get yours at https://proxifly.dev)
-});
-```
-
-### Script Tag
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/proxifly@latest/dist/proxifly.min.js"></script>
-<script>
-  var proxifly = new Proxifly({
-    apiKey: 'your-api-key',
-  });
-</script>
-```
-
-### curl
-
+Clone this repo then run the following commands:
 ```shell
-# Get your public IP
-curl https://api.proxifly.dev/ip
-
-# Get a proxy
-curl https://api.proxifly.dev/proxy
-
-# With options
-curl "https://api.proxifly.dev/proxy?protocol=http&quantity=3&format=text"
+cd <download-directory>
+npm install
+npm start
 ```
 
-## API
+## 🙋‍♂️ Want to contribute?
 
-### `getProxy(options)`
+Want to contribute? Great! All contributions are welcome, from code to documentation to graphics to design suggestions to bug reports.
 
-Get a filtered list of proxies.
-
-```js
-proxifly.getProxy({
-  protocol: 'http',     // http | socks4 | socks5
-  anonymity: 'elite',   // transparent | anonymous | elite
-  country: 'US',        // ISO country code
-  https: true,          // true | false
-  quantity: 1,          // 1 - 20
-  format: 'json',       // json | text
-})
-.then(proxy => console.log(proxy))
-.catch(e => console.error(e));
-```
-
-**Options**
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `protocol` | `string` | — | Filter by protocol: `http`, `socks4`, `socks5` |
-| `anonymity` | `string` | — | Filter by anonymity: `transparent`, `anonymous`, `elite` |
-| `country` | `string` | — | Filter by ISO country code (`US`, `GB`, `DE`, etc.) |
-| `https` | `boolean` | — | Filter by HTTPS support |
-| `quantity` | `number` | `1` | Number of proxies to return (1–20). Returns an array when > 1. |
-| `format` | `string` | `json` | Response format: `json` or `text` |
-| `timeout` | `number` | `60000` | Request timeout in milliseconds |
-
-**Example response**
-
-```json
-{
-  "proxy": "socks4://103.99.110.222:5678",
-  "protocol": "socks4",
-  "ip": "103.99.110.222",
-  "port": 5678,
-  "https": false,
-  "anonymity": "transparent",
-  "score": 1,
-  "geolocation": { "country": "IN", "city": "Unknown" }
-}
-```
-
-### `getPublicIp(options)`
-
-Get your public IP address.
-
-```js
-proxifly.getPublicIp()
-.then(response => {
-  console.log('IP:', response.ip);
-  console.log('Country:', response.country);
-})
-.catch(e => console.error(e));
-```
-
-**Options**
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `format` | `string` | `json` | Response format: `json` or `text` |
-| `timeout` | `number` | `60000` | Request timeout in milliseconds |
-
-**Example response**
-
-```json
-{
-  "ip": "104.173.192.180",
-  "continent": "NA",
-  "country": "US",
-  "region": "California",
-  "city": "Los Angeles",
-  "latitude": 34.0544,
-  "longitude": -118.2441
-}
-```
-
-## Development
-
-```bash
-npm start        # Watch mode - rebuilds on file changes
-npm run build    # One-time build (ESM, CJS, IIFE)
-npm test         # Run tests
-```
-
-### Build Outputs
-
-| File | Format | Use Case |
-|------|--------|----------|
-| `dist/index.mjs` | ESM | `import` in modern bundlers (webpack, Vite, etc.) |
-| `dist/index.js` | CJS | `require()` in Node.js |
-| `dist/proxifly.min.js` | IIFE (minified) | `<script>` tag / CDN |
-
-## License
-
-MIT
+[Visit Proxifly](https://proxifly.dev) to learn more.
